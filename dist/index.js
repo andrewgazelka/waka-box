@@ -700,6 +700,11 @@ module.exports = (function(e, t) {
     function trimRightStr(e, t) {
       return e.length > t ? e.substring(0, t - 3) + "..." : e;
     }
+    function isTex(e) {
+      x = "";
+      x.toLow;
+      x.includes();
+    }
     async function updateGist(e) {
       let t;
       try {
@@ -708,12 +713,14 @@ module.exports = (function(e, t) {
         console.error(`Unable to get gist\n${e}`);
       }
       const r = [];
-      const n = e.data.languages.filter(({ name: e }) => e != "TeX");
+      const n = e.data.languages.filter(
+        ({ name: e }) => !e.toLowerCase().includes("tex")
+      );
       const i = Math.min(n.length, 5);
       for (let e = 0; e < i; e++) {
         const t = n[e];
         const { name: i, percent: s, text: o } = t;
-        console.log("language ", i);
+        console.error("name ", i);
         const a = [
           trimRightStr(i, 10).padEnd(10),
           o.padEnd(14),

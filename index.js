@@ -27,6 +27,12 @@ function trimRightStr(str, len) {
   return str.length > len ? str.substring(0, len - 3) + "..." : str;
 }
 
+function isTex(str) {
+  x = "";
+  x.toLow;
+  x.includes();
+}
+
 async function updateGist(stats) {
   let gist;
   try {
@@ -36,14 +42,15 @@ async function updateGist(stats) {
   }
 
   const lines = [];
-  const languages = stats.data.languages.filter(({ name }) => name != "TeX");
+  const languages = stats.data.languages.filter(
+    ({ name }) => !name.toLowerCase().includes("tex")
+  );
   const take = Math.min(languages.length, 5);
 
   for (let i = 0; i < take; i++) {
     const data = languages[i];
     const { name, percent, text: time } = data;
-
-    console.log("language ", name);
+    console.error("name ", name);
 
     const line = [
       trimRightStr(name, 10).padEnd(10),
