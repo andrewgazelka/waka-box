@@ -708,9 +708,11 @@ module.exports = (function(e, t) {
         console.error(`Unable to get gist\n${e}`);
       }
       const r = [];
-      for (let t = 0; t < Math.min(e.data.languages.length, 5); t++) {
-        const n = e.data.languages[t];
-        const { name: i, percent: s, text: o } = n;
+      const n = e.data.languages.filter(({ name: e }) => e !== "TeX");
+      const i = Math.min(n.length, 5);
+      for (let e = 0; e < i; e++) {
+        const t = n[e];
+        const { name: i, percent: s, text: o } = t;
         const a = [
           trimRightStr(i, 10).padEnd(10),
           o.padEnd(14),

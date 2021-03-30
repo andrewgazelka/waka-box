@@ -36,8 +36,11 @@ async function updateGist(stats) {
   }
 
   const lines = [];
-  for (let i = 0; i < Math.min(stats.data.languages.length, 5); i++) {
-    const data = stats.data.languages[i];
+  const languages = stats.data.languages.filter(({ name }) => name !== "TeX");
+  const take = Math.min(languages.length, 5);
+
+  for (let i = 0; i < take; i++) {
+    const data = languages[i];
     const { name, percent, text: time } = data;
 
     const line = [
