@@ -691,19 +691,14 @@ module.exports = (function(e, t) {
     async function main() {
       try {
         const e = await p.getMyStats({ range: i.LAST_7_DAYS });
+        await updateGist(e);
       } catch (e) {
         console.error("Error getting wakatime stats: ", e);
         return;
       }
-      await updateGist(stats);
     }
     function trimRightStr(e, t) {
       return e.length > t ? e.substring(0, t - 3) + "..." : e;
-    }
-    function isTex(e) {
-      x = "";
-      x.toLow;
-      x.includes();
     }
     async function updateGist(e) {
       let t;
@@ -720,7 +715,6 @@ module.exports = (function(e, t) {
       for (let e = 0; e < i; e++) {
         const t = n[e];
         const { name: i, percent: s, text: o } = t;
-        console.error("name ", i);
         const a = [
           trimRightStr(i, 10).padEnd(10),
           o.padEnd(14),

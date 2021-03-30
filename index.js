@@ -15,22 +15,16 @@ const octokit = new Octokit({ auth: `token ${githubToken}` });
 async function main() {
   try {
     const stats = await wakatime.getMyStats({ range: RANGE.LAST_7_DAYS });
+    await updateGist(stats);
   } catch (e) {
     console.error("Error getting wakatime stats: ", e);
     return;
   }
-  await updateGist(stats);
 }
 
 function trimRightStr(str, len) {
   // Ellipsis takes 3 positions, so the index of substring is 0 to total length - 3.
   return str.length > len ? str.substring(0, len - 3) + "..." : str;
-}
-
-function isTex(str) {
-  x = "";
-  x.toLow;
-  x.includes();
 }
 
 async function updateGist(stats) {
