@@ -85,5 +85,6 @@ function generateBarChart(percent, size) {
 }
 
 (async () => {
+  console.log("starting wala-box run");
   await main();
 })();
