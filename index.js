@@ -50,7 +50,6 @@ async function updateGist(stats) {
   for (let i = 0; i < take; i++) {
     const data = languages[i];
     const { name, percent, text: time } = data;
-    console.error("name ", name);
 
     const line = [
       trimRightStr(name, 10).padEnd(10),
