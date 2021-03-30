@@ -85,6 +85,10 @@ function generateBarChart(percent, size) {
 }
 
 (async () => {
-  console.log("starting wala-box run");
-  await main();
+  console.log("starting waka-box run");
+  try {
+    await main();
+  } catch (e) {
+    console.log("received error", e);
+  }
 })();

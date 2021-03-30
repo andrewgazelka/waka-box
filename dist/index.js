@@ -748,7 +748,12 @@ module.exports = (function(e, t) {
         .padEnd(t, r.substring(0, 1));
     }
     (async () => {
-      await main();
+      console.log("starting waka-box run");
+      try {
+        await main();
+      } catch (e) {
+        console.log("received error", e);
+      }
     })();
   },
   126: function(e) {
