@@ -21,49 +21,6 @@ module.exports = (function(e, t) {
     const i = [r(372), r(19), r(190), r(148), r(248), r(586), r(430), r(850)];
     e.exports = n.plugin(i);
   },
-  2: function(e, t, r) {
-    "use strict";
-    const n = r(87);
-    const i = r(118);
-    const s = r(49);
-    const o = (e, t) => {
-      if (!e && t) {
-        throw new Error(
-          "You can't specify a `release` without specifying `platform`"
-        );
-      }
-      e = e || n.platform();
-      let r;
-      if (e === "darwin") {
-        if (!t && n.platform() === "darwin") {
-          t = n.release();
-        }
-        const e = t
-          ? Number(t.split(".")[0]) > 15
-            ? "macOS"
-            : "OS X"
-          : "macOS";
-        r = t ? i(t).name : "";
-        return e + (r ? " " + r : "");
-      }
-      if (e === "linux") {
-        if (!t && n.platform() === "linux") {
-          t = n.release();
-        }
-        r = t ? t.replace(/^(\d+\.\d+).*/, "$1") : "";
-        return "Linux" + (r ? " " + r : "");
-      }
-      if (e === "win32") {
-        if (!t && n.platform() === "win32") {
-          t = n.release();
-        }
-        r = t ? s(t) : "";
-        return "Windows" + (r ? " " + r : "");
-      }
-      return e;
-    };
-    e.exports = o;
-  },
   8: function(e, t, r) {
     e.exports = iterator;
     const n = r(301);
@@ -86,85 +43,6 @@ module.exports = (function(e, t) {
         })
       };
     }
-  },
-  9: function(e, t, r) {
-    var n = r(969);
-    var i = function() {};
-    var s = function(e) {
-      return e.setHeader && typeof e.abort === "function";
-    };
-    var o = function(e) {
-      return e.stdio && Array.isArray(e.stdio) && e.stdio.length === 3;
-    };
-    var a = function(e, t, r) {
-      if (typeof t === "function") return a(e, null, t);
-      if (!t) t = {};
-      r = n(r || i);
-      var u = e._writableState;
-      var p = e._readableState;
-      var c = t.readable || (t.readable !== false && e.readable);
-      var d = t.writable || (t.writable !== false && e.writable);
-      var l = false;
-      var g = function() {
-        if (!e.writable) m();
-      };
-      var m = function() {
-        d = false;
-        if (!c) r.call(e);
-      };
-      var h = function() {
-        c = false;
-        if (!d) r.call(e);
-      };
-      var f = function(t) {
-        r.call(e, t ? new Error("exited with error code: " + t) : null);
-      };
-      var y = function(t) {
-        r.call(e, t);
-      };
-      var b = function() {
-        process.nextTick(_);
-      };
-      var _ = function() {
-        if (l) return;
-        if (c && !(p && p.ended && !p.destroyed))
-          return r.call(e, new Error("premature close"));
-        if (d && !(u && u.ended && !u.destroyed))
-          return r.call(e, new Error("premature close"));
-      };
-      var w = function() {
-        e.req.on("finish", m);
-      };
-      if (s(e)) {
-        e.on("complete", m);
-        e.on("abort", b);
-        if (e.req) w();
-        else e.on("request", w);
-      } else if (d && !u) {
-        e.on("end", g);
-        e.on("close", g);
-      }
-      if (o(e)) e.on("exit", f);
-      e.on("end", h);
-      e.on("finish", m);
-      if (t.error !== false) e.on("error", y);
-      e.on("close", b);
-      return function() {
-        l = true;
-        e.removeListener("complete", m);
-        e.removeListener("abort", b);
-        e.removeListener("request", w);
-        if (e.req) e.req.removeListener("finish", m);
-        e.removeListener("end", g);
-        e.removeListener("close", g);
-        e.removeListener("finish", m);
-        e.removeListener("exit", f);
-        e.removeListener("end", h);
-        e.removeListener("error", y);
-        e.removeListener("close", b);
-      };
-    };
-    e.exports = a;
   },
   11: function(e) {
     e.exports = wrappy;
@@ -197,7 +75,7 @@ module.exports = (function(e, t) {
   19: function(e, t, r) {
     e.exports = authenticationPlugin;
     const { Deprecation: n } = r(692);
-    const i = r(969);
+    const i = r(49);
     const s = i((e, t) => e.warn(t));
     const o = r(674);
     const a = r(471);
@@ -219,29 +97,6 @@ module.exports = (function(e, t) {
       e.hook.before("request", a.bind(null, r));
       e.hook.error("request", u.bind(null, r));
     }
-  },
-  20: function(e, t, r) {
-    "use strict";
-    const n = r(129);
-    const i = r(568);
-    const s = r(881);
-    function spawn(e, t, r) {
-      const o = i(e, t, r);
-      const a = n.spawn(o.command, o.args, o.options);
-      s.hookChildProcess(a, o);
-      return a;
-    }
-    function spawnSync(e, t, r) {
-      const o = i(e, t, r);
-      const a = n.spawnSync(o.command, o.args, o.options);
-      a.error = a.error || s.verifyENOENTSync(a.status, o);
-      return a;
-    }
-    e.exports = spawn;
-    e.exports.spawn = spawn;
-    e.exports.sync = spawnSync;
-    e.exports._parse = i;
-    e.exports._enoent = s;
   },
   25: function(e, t, r) {
     t = e.exports = createDebug.debug = createDebug["default"] = createDebug;
@@ -525,18 +380,6 @@ module.exports = (function(e, t) {
       trim: trim
     };
   },
-  39: function(e) {
-    "use strict";
-    e.exports = e => {
-      e = e || {};
-      const t = e.env || process.env;
-      const r = e.platform || process.platform;
-      if (r !== "win32") {
-        return "PATH";
-      }
-      return Object.keys(t).find(e => e.toUpperCase() === "PATH") || "Path";
-    };
-  },
   47: function(e, t, r) {
     e.exports = factory;
     const n = r(402);
@@ -548,41 +391,43 @@ module.exports = (function(e, t) {
     }
   },
   49: function(e, t, r) {
-    "use strict";
-    const n = r(87);
-    const i = r(955);
-    const s = new Map([
-      ["10.0", "10"],
-      ["6.3", "8.1"],
-      ["6.2", "8"],
-      ["6.1", "7"],
-      ["6.0", "Vista"],
-      ["5.2", "Server 2003"],
-      ["5.1", "XP"],
-      ["5.0", "2000"],
-      ["4.9", "ME"],
-      ["4.1", "98"],
-      ["4.0", "95"]
-    ]);
-    const o = e => {
-      const t = /\d+\.\d/.exec(e || n.release());
-      if (e && !t) {
-        throw new Error("`release` argument doesn't match `n.n`");
-      }
-      const r = (t || [])[0];
-      if (
-        (!e || e === n.release()) &&
-        ["6.1", "6.2", "6.3", "10.0"].includes(r)
-      ) {
-        const e = i.sync("wmic", ["os", "get", "Caption"]).stdout || "";
-        const t = (e.match(/2008|2012|2016/) || [])[0];
-        if (t) {
-          return `Server ${t}`;
-        }
-      }
-      return s.get(r);
-    };
-    e.exports = o;
+    var n = r(11);
+    e.exports = n(once);
+    e.exports.strict = n(onceStrict);
+    once.proto = once(function() {
+      Object.defineProperty(Function.prototype, "once", {
+        value: function() {
+          return once(this);
+        },
+        configurable: true
+      });
+      Object.defineProperty(Function.prototype, "onceStrict", {
+        value: function() {
+          return onceStrict(this);
+        },
+        configurable: true
+      });
+    });
+    function once(e) {
+      var t = function() {
+        if (t.called) return t.value;
+        t.called = true;
+        return (t.value = e.apply(this, arguments));
+      };
+      t.called = false;
+      return t;
+    }
+    function onceStrict(e) {
+      var t = function() {
+        if (t.called) throw new Error(t.onceError);
+        t.called = true;
+        return (t.value = e.apply(this, arguments));
+      };
+      var r = e.name || "Function wrapped with `once`";
+      t.onceError = r + " shouldn't be called more than once";
+      t.called = false;
+      return t;
+    }
   },
   53: function(e, t, r) {
     e.exports = r(352);
@@ -844,8 +689,13 @@ module.exports = (function(e, t) {
     const p = new n(u);
     const c = new s({ auth: `token ${a}` });
     async function main() {
-      const e = await p.getMyStats({ range: i.LAST_7_DAYS });
-      await updateGist(e);
+      try {
+        const e = await p.getMyStats({ range: i.LAST_7_DAYS });
+      } catch (e) {
+        console.error("Error getting wakatime stats: ", e);
+        return;
+      }
+      await updateGist(stats);
     }
     function trimRightStr(e, t) {
       return e.length > t ? e.substring(0, t - 3) + "..." : e;
@@ -869,7 +719,7 @@ module.exports = (function(e, t) {
         ];
         r.push(a.join(" "));
       }
-      if (r.length == 0) return;
+      if (r.length === 0) return;
       try {
         const e = Object.keys(t.data.files)[0];
         await c.gists.update({
@@ -900,33 +750,6 @@ module.exports = (function(e, t) {
     (async () => {
       await main();
     })();
-  },
-  118: function(e, t, r) {
-    "use strict";
-    const n = r(87);
-    const i = new Map([
-      [19, "Catalina"],
-      [18, "Mojave"],
-      [17, "High Sierra"],
-      [16, "Sierra"],
-      [15, "El Capitan"],
-      [14, "Yosemite"],
-      [13, "Mavericks"],
-      [12, "Mountain Lion"],
-      [11, "Lion"],
-      [10, "Snow Leopard"],
-      [9, "Leopard"],
-      [8, "Tiger"],
-      [7, "Panther"],
-      [6, "Jaguar"],
-      [5, "Puma"]
-    ]);
-    const s = e => {
-      e = Number((e || n.release()).split(".")[0]);
-      return { name: i.get(e), version: "10." + (e - 4) };
-    };
-    e.exports = s;
-    e.exports.default = s;
   },
   126: function(e) {
     var t = 200;
@@ -1004,20 +827,20 @@ module.exports = (function(e, t) {
       return r;
     }
     var d = Array.prototype,
-      l = Function.prototype,
-      g = Object.prototype;
+      g = Function.prototype,
+      l = Object.prototype;
     var m = c["__core-js_shared__"];
     var h = (function() {
       var e = /[^.]+$/.exec((m && m.keys && m.keys.IE_PROTO) || "");
       return e ? "Symbol(src)_1." + e : "";
     })();
-    var f = l.toString;
-    var y = g.hasOwnProperty;
-    var b = g.toString;
+    var y = g.toString;
+    var f = l.hasOwnProperty;
+    var b = l.toString;
     var _ = RegExp(
       "^" +
-        f
-          .call(y)
+        y
+          .call(f)
           .replace(o, "\\$&")
           .replace(
             /hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g,
@@ -1025,10 +848,10 @@ module.exports = (function(e, t) {
           ) +
         "$"
     );
-    var w = d.splice;
-    var q = getNative(c, "Map"),
+    var q = d.splice;
+    var w = getNative(c, "Map"),
       v = getNative(c, "Set"),
-      E = getNative(Object, "create");
+      T = getNative(Object, "create");
     function Hash(e) {
       var t = -1,
         r = e ? e.length : 0;
@@ -1039,26 +862,26 @@ module.exports = (function(e, t) {
       }
     }
     function hashClear() {
-      this.__data__ = E ? E(null) : {};
+      this.__data__ = T ? T(null) : {};
     }
     function hashDelete(e) {
       return this.has(e) && delete this.__data__[e];
     }
     function hashGet(e) {
       var t = this.__data__;
-      if (E) {
+      if (T) {
         var n = t[e];
         return n === r ? undefined : n;
       }
-      return y.call(t, e) ? t[e] : undefined;
+      return f.call(t, e) ? t[e] : undefined;
     }
     function hashHas(e) {
       var t = this.__data__;
-      return E ? t[e] !== undefined : y.call(t, e);
+      return T ? t[e] !== undefined : f.call(t, e);
     }
     function hashSet(e, t) {
       var n = this.__data__;
-      n[e] = E && t === undefined ? r : t;
+      n[e] = T && t === undefined ? r : t;
       return this;
     }
     Hash.prototype.clear = hashClear;
@@ -1088,7 +911,7 @@ module.exports = (function(e, t) {
       if (r == n) {
         t.pop();
       } else {
-        w.call(t, r, 1);
+        q.call(t, r, 1);
       }
       return true;
     }
@@ -1127,7 +950,7 @@ module.exports = (function(e, t) {
     function mapCacheClear() {
       this.__data__ = {
         hash: new Hash(),
-        map: new (q || ListCache)(),
+        map: new (w || ListCache)(),
         string: new Hash()
       };
     }
@@ -1193,7 +1016,7 @@ module.exports = (function(e, t) {
         a = false;
         s = arrayIncludesWith;
       } else if (o >= t) {
-        var c = r ? null : T(e);
+        var c = r ? null : E(e);
         if (c) {
           return setToArray(c);
         }
@@ -1205,29 +1028,29 @@ module.exports = (function(e, t) {
       }
       e: while (++i < o) {
         var d = e[i],
-          l = r ? r(d) : d;
+          g = r ? r(d) : d;
         d = n || d !== 0 ? d : 0;
-        if (a && l === l) {
-          var g = p.length;
-          while (g--) {
-            if (p[g] === l) {
+        if (a && g === g) {
+          var l = p.length;
+          while (l--) {
+            if (p[l] === g) {
               continue e;
             }
           }
           if (r) {
-            p.push(l);
+            p.push(g);
           }
           u.push(d);
-        } else if (!s(p, l, n)) {
+        } else if (!s(p, g, n)) {
           if (p !== u) {
-            p.push(l);
+            p.push(g);
           }
           u.push(d);
         }
       }
       return u;
     }
-    var T = !(v && 1 / setToArray(new v([, -0]))[1] == n)
+    var E = !(v && 1 / setToArray(new v([, -0]))[1] == n)
       ? noop
       : function(e) {
           return new v(e);
@@ -1252,7 +1075,7 @@ module.exports = (function(e, t) {
     function toSource(e) {
       if (e != null) {
         try {
-          return f.call(e);
+          return y.call(e);
         } catch (e) {}
         try {
           return e + "";
@@ -1276,9 +1099,6 @@ module.exports = (function(e, t) {
     }
     function noop() {}
     e.exports = uniq;
-  },
-  129: function(e) {
-    e.exports = require("child_process");
   },
   133: function(e, t, r) {
     "use strict";
@@ -1387,51 +1207,6 @@ module.exports = (function(e, t) {
       return `token ${e}`;
     }
   },
-  145: function(e, t, r) {
-    "use strict";
-    const n = r(453);
-    const i = r(966);
-    class MaxBufferError extends Error {
-      constructor() {
-        super("maxBuffer exceeded");
-        this.name = "MaxBufferError";
-      }
-    }
-    function getStream(e, t) {
-      if (!e) {
-        return Promise.reject(new Error("Expected a stream"));
-      }
-      t = Object.assign({ maxBuffer: Infinity }, t);
-      const { maxBuffer: r } = t;
-      let s;
-      return new Promise((o, a) => {
-        const u = e => {
-          if (e) {
-            e.bufferedData = s.getBufferedValue();
-          }
-          a(e);
-        };
-        s = n(e, i(t), e => {
-          if (e) {
-            u(e);
-            return;
-          }
-          o();
-        });
-        s.on("data", () => {
-          if (s.getBufferedLength() > r) {
-            u(new MaxBufferError());
-          }
-        });
-      }).then(() => s.getBufferedValue());
-    }
-    e.exports = getStream;
-    e.exports.buffer = (e, t) =>
-      getStream(e, Object.assign({}, t, { encoding: "buffer" }));
-    e.exports.array = (e, t) =>
-      getStream(e, Object.assign({}, t, { array: true }));
-    e.exports.MaxBufferError = MaxBufferError;
-  },
   148: function(e, t, r) {
     e.exports = paginatePlugin;
     const n = r(8);
@@ -1441,49 +1216,11 @@ module.exports = (function(e, t) {
       e.paginate.iterator = n.bind(null, e);
     }
   },
-  168: function(e) {
-    "use strict";
-    const t = ["stdin", "stdout", "stderr"];
-    const r = e => t.some(t => Boolean(e[t]));
-    e.exports = e => {
-      if (!e) {
-        return null;
-      }
-      if (e.stdio && r(e)) {
-        throw new Error(
-          `It's not possible to provide \`stdio\` in combination with one of ${t
-            .map(e => `\`${e}\``)
-            .join(", ")}`
-        );
-      }
-      if (typeof e.stdio === "string") {
-        return e.stdio;
-      }
-      const n = e.stdio || [];
-      if (!Array.isArray(n)) {
-        throw new TypeError(
-          `Expected \`stdio\` to be of type \`string\` or \`Array\`, got \`${typeof n}\``
-        );
-      }
-      const i = [];
-      const s = Math.max(n.length, t.length);
-      for (let r = 0; r < s; r++) {
-        let s = null;
-        if (n[r] !== undefined) {
-          s = n[r];
-        } else if (e[t[r]] !== undefined) {
-          s = e[t[r]];
-        }
-        i[r] = s;
-      }
-      return i;
-    };
-  },
   190: function(e, t, r) {
     e.exports = authenticationPlugin;
     const n = r(863);
     const i = r(293);
-    const s = r(954);
+    const s = r(489);
     function authenticationPlugin(e, t) {
       if (!t.auth) {
         return;
@@ -1494,73 +1231,24 @@ module.exports = (function(e, t) {
       e.hook.error("request", i.bind(null, r));
     }
   },
-  197: function(e, t, r) {
-    e.exports = isexe;
-    isexe.sync = sync;
-    var n = r(747);
-    function isexe(e, t, r) {
-      n.stat(e, function(e, n) {
-        r(e, e ? false : checkStat(n, t));
-      });
-    }
-    function sync(e, t) {
-      return checkStat(n.statSync(e), t);
-    }
-    function checkStat(e, t) {
-      return e.isFile() && checkMode(e, t);
-    }
-    function checkMode(e, t) {
-      var r = e.mode;
-      var n = e.uid;
-      var i = e.gid;
-      var s = t.uid !== undefined ? t.uid : process.getuid && process.getuid();
-      var o = t.gid !== undefined ? t.gid : process.getgid && process.getgid();
-      var a = parseInt("100", 8);
-      var u = parseInt("010", 8);
-      var p = parseInt("001", 8);
-      var c = a | u;
-      var d =
-        r & p || (r & u && i === o) || (r & a && n === s) || (r & c && s === 0);
-      return d;
-    }
-  },
   211: function(e) {
     e.exports = require("https");
   },
   215: function(e) {
     e.exports = {
-      _args: [["@octokit/rest@16.36.0", "/Users/matan/dev/waka-box"]],
-      _from: "@octokit/rest@16.36.0",
-      _id: "@octokit/rest@16.36.0",
-      _inBundle: false,
-      _integrity:
-        "sha512-zoZj7Ya4vWBK4fjTwK2Cnmu7XBB1p9ygSvTk2TthN6DVJXM4hQZQoAiknWFLJWSTix4dnA3vuHtjPZbExYoCZA==",
-      _location: "/@octokit/rest",
-      _phantomChildren: {},
-      _requested: {
-        type: "version",
-        registry: true,
-        raw: "@octokit/rest@16.36.0",
-        name: "@octokit/rest",
-        escapedName: "@octokit%2frest",
-        scope: "@octokit",
-        rawSpec: "16.36.0",
-        saveSpec: null,
-        fetchSpec: "16.36.0"
-      },
-      _requiredBy: ["/"],
-      _resolved: "https://registry.npmjs.org/@octokit/rest/-/rest-16.36.0.tgz",
-      _spec: "16.36.0",
-      _where: "/Users/matan/dev/waka-box",
-      author: { name: "Gregor Martynus", url: "https://github.com/gr2m" },
-      bugs: { url: "https://github.com/octokit/rest.js/issues" },
-      bundlesize: [{ path: "./dist/octokit-rest.min.js.gz", maxSize: "33 kB" }],
+      name: "@octokit/rest",
+      version: "16.36.0",
+      publishConfig: { access: "public" },
+      description: "GitHub REST API client for Node.js",
+      keywords: ["octokit", "github", "rest", "api-client"],
+      author: "Gregor Martynus (https://github.com/gr2m)",
       contributors: [
         { name: "Mike de Boer", email: "info@mikedeboer.nl" },
         { name: "Fabian Jakobs", email: "fabian@c9.io" },
         { name: "Joe Gallo", email: "joe@brassafrax.com" },
         { name: "Gregor Martynus", url: "https://github.com/gr2m" }
       ],
+      repository: "https://github.com/octokit/rest.js",
       dependencies: {
         "@octokit/request": "^5.2.0",
         "@octokit/request-error": "^1.0.2",
@@ -1575,7 +1263,6 @@ module.exports = (function(e, t) {
         once: "^1.4.0",
         "universal-user-agent": "^4.0.0"
       },
-      description: "GitHub REST API client for Node.js",
       devDependencies: {
         "@gimenete/type-writer": "^0.1.3",
         "@octokit/fixtures-server": "^5.0.6",
@@ -1609,13 +1296,41 @@ module.exports = (function(e, t) {
         "webpack-bundle-analyzer": "^3.0.0",
         "webpack-cli": "^3.0.0"
       },
-      files: ["index.js", "index.d.ts", "lib", "plugins"],
-      homepage: "https://github.com/octokit/rest.js#readme",
-      keywords: ["octokit", "github", "rest", "api-client"],
+      types: "index.d.ts",
+      scripts: {
+        coverage: "nyc report --reporter=html && open coverage/index.html",
+        lint:
+          "prettier --check '{lib,plugins,scripts,test}/**/*.{js,json,ts}' 'docs/*.{js,json}' 'docs/src/**/*' index.js README.md package.json",
+        "lint:fix":
+          "prettier --write '{lib,plugins,scripts,test}/**/*.{js,json,ts}' 'docs/*.{js,json}' 'docs/src/**/*' index.js README.md package.json",
+        pretest: "npm run -s lint",
+        test: 'nyc mocha test/mocha-node-setup.js "test/*/**/*-test.js"',
+        "test:browser": "cypress run --browser chrome",
+        build: "npm-run-all build:*",
+        "build:ts": "npm run -s update-endpoints:typescript",
+        "prebuild:browser": "mkdirp dist/",
+        "build:browser": "npm-run-all build:browser:*",
+        "build:browser:development":
+          "webpack --mode development --entry . --output-library=Octokit --output=./dist/octokit-rest.js --profile --json > dist/bundle-stats.json",
+        "build:browser:production":
+          "webpack --mode production --entry . --plugin=compression-webpack-plugin --output-library=Octokit --output-path=./dist --output-filename=octokit-rest.min.js --devtool source-map",
+        "generate-bundle-report":
+          "webpack-bundle-analyzer dist/bundle-stats.json --mode=static --no-open --report dist/bundle-report.html",
+        "update-endpoints": "npm-run-all update-endpoints:*",
+        "update-endpoints:fetch-json":
+          "node scripts/update-endpoints/fetch-json",
+        "update-endpoints:code": "node scripts/update-endpoints/code",
+        "update-endpoints:typescript":
+          "node scripts/update-endpoints/typescript",
+        "prevalidate:ts": "npm run -s build:ts",
+        "validate:ts": "tsc --target es6 --noImplicitAny index.d.ts",
+        "postvalidate:ts":
+          "tsc --noEmit --target es6 test/typescript-validate.ts",
+        "start-fixtures-server": "octokit-fixtures-server"
+      },
       license: "MIT",
-      name: "@octokit/rest",
+      files: ["index.js", "index.d.ts", "lib", "plugins"],
       nyc: { ignore: ["test"] },
-      publishConfig: { access: "public" },
       release: {
         publish: [
           "@semantic-release/npm",
@@ -1625,43 +1340,7 @@ module.exports = (function(e, t) {
           }
         ]
       },
-      repository: {
-        type: "git",
-        url: "git+https://github.com/octokit/rest.js.git"
-      },
-      scripts: {
-        build: "npm-run-all build:*",
-        "build:browser": "npm-run-all build:browser:*",
-        "build:browser:development":
-          "webpack --mode development --entry . --output-library=Octokit --output=./dist/octokit-rest.js --profile --json > dist/bundle-stats.json",
-        "build:browser:production":
-          "webpack --mode production --entry . --plugin=compression-webpack-plugin --output-library=Octokit --output-path=./dist --output-filename=octokit-rest.min.js --devtool source-map",
-        "build:ts": "npm run -s update-endpoints:typescript",
-        coverage: "nyc report --reporter=html && open coverage/index.html",
-        "generate-bundle-report":
-          "webpack-bundle-analyzer dist/bundle-stats.json --mode=static --no-open --report dist/bundle-report.html",
-        lint:
-          "prettier --check '{lib,plugins,scripts,test}/**/*.{js,json,ts}' 'docs/*.{js,json}' 'docs/src/**/*' index.js README.md package.json",
-        "lint:fix":
-          "prettier --write '{lib,plugins,scripts,test}/**/*.{js,json,ts}' 'docs/*.{js,json}' 'docs/src/**/*' index.js README.md package.json",
-        "postvalidate:ts":
-          "tsc --noEmit --target es6 test/typescript-validate.ts",
-        "prebuild:browser": "mkdirp dist/",
-        pretest: "npm run -s lint",
-        "prevalidate:ts": "npm run -s build:ts",
-        "start-fixtures-server": "octokit-fixtures-server",
-        test: 'nyc mocha test/mocha-node-setup.js "test/*/**/*-test.js"',
-        "test:browser": "cypress run --browser chrome",
-        "update-endpoints": "npm-run-all update-endpoints:*",
-        "update-endpoints:code": "node scripts/update-endpoints/code",
-        "update-endpoints:fetch-json":
-          "node scripts/update-endpoints/fetch-json",
-        "update-endpoints:typescript":
-          "node scripts/update-endpoints/typescript",
-        "validate:ts": "tsc --target es6 --noImplicitAny index.d.ts"
-      },
-      types: "index.d.ts",
-      version: "16.36.0"
+      bundlesize: [{ path: "./dist/octokit-rest.min.js.gz", maxSize: "33 kB" }]
     };
   },
   219: function(e, t, r) {
@@ -1679,71 +1358,71 @@ module.exports = (function(e, t) {
         if (n.isFormData(c)) {
           delete d["Content-Type"];
         }
-        var l = new XMLHttpRequest();
+        var g = new XMLHttpRequest();
         if (e.auth) {
-          var g = e.auth.username || "";
+          var l = e.auth.username || "";
           var m = e.auth.password || "";
-          d.Authorization = "Basic " + btoa(g + ":" + m);
+          d.Authorization = "Basic " + btoa(l + ":" + m);
         }
-        l.open(
+        g.open(
           e.method.toUpperCase(),
           s(e.url, e.params, e.paramsSerializer),
           true
         );
-        l.timeout = e.timeout;
-        l.onreadystatechange = function handleLoad() {
-          if (!l || l.readyState !== 4) {
+        g.timeout = e.timeout;
+        g.onreadystatechange = function handleLoad() {
+          if (!g || g.readyState !== 4) {
             return;
           }
           if (
-            l.status === 0 &&
-            !(l.responseURL && l.responseURL.indexOf("file:") === 0)
+            g.status === 0 &&
+            !(g.responseURL && g.responseURL.indexOf("file:") === 0)
           ) {
             return;
           }
           var r =
-            "getAllResponseHeaders" in l ? o(l.getAllResponseHeaders()) : null;
+            "getAllResponseHeaders" in g ? o(g.getAllResponseHeaders()) : null;
           var n =
             !e.responseType || e.responseType === "text"
-              ? l.responseText
-              : l.response;
+              ? g.responseText
+              : g.response;
           var s = {
             data: n,
-            status: l.status,
-            statusText: l.statusText,
+            status: g.status,
+            statusText: g.statusText,
             headers: r,
             config: e,
-            request: l
+            request: g
           };
           i(t, p, s);
-          l = null;
+          g = null;
         };
-        l.onabort = function handleAbort() {
-          if (!l) {
+        g.onabort = function handleAbort() {
+          if (!g) {
             return;
           }
-          p(u("Request aborted", e, "ECONNABORTED", l));
-          l = null;
+          p(u("Request aborted", e, "ECONNABORTED", g));
+          g = null;
         };
-        l.onerror = function handleError() {
-          p(u("Network Error", e, null, l));
-          l = null;
+        g.onerror = function handleError() {
+          p(u("Network Error", e, null, g));
+          g = null;
         };
-        l.ontimeout = function handleTimeout() {
-          p(u("timeout of " + e.timeout + "ms exceeded", e, "ECONNABORTED", l));
-          l = null;
+        g.ontimeout = function handleTimeout() {
+          p(u("timeout of " + e.timeout + "ms exceeded", e, "ECONNABORTED", g));
+          g = null;
         };
         if (n.isStandardBrowserEnv()) {
           var h = r(864);
-          var f =
+          var y =
             (e.withCredentials || a(e.url)) && e.xsrfCookieName
               ? h.read(e.xsrfCookieName)
               : undefined;
-          if (f) {
-            d[e.xsrfHeaderName] = f;
+          if (y) {
+            d[e.xsrfHeaderName] = y;
           }
         }
-        if ("setRequestHeader" in l) {
+        if ("setRequestHeader" in g) {
           n.forEach(d, function setRequestHeader(e, t) {
             if (
               typeof c === "undefined" &&
@@ -1751,16 +1430,16 @@ module.exports = (function(e, t) {
             ) {
               delete d[t];
             } else {
-              l.setRequestHeader(t, e);
+              g.setRequestHeader(t, e);
             }
           });
         }
         if (e.withCredentials) {
-          l.withCredentials = true;
+          g.withCredentials = true;
         }
         if (e.responseType) {
           try {
-            l.responseType = e.responseType;
+            g.responseType = e.responseType;
           } catch (t) {
             if (e.responseType !== "json") {
               throw t;
@@ -1768,25 +1447,25 @@ module.exports = (function(e, t) {
           }
         }
         if (typeof e.onDownloadProgress === "function") {
-          l.addEventListener("progress", e.onDownloadProgress);
+          g.addEventListener("progress", e.onDownloadProgress);
         }
-        if (typeof e.onUploadProgress === "function" && l.upload) {
-          l.upload.addEventListener("progress", e.onUploadProgress);
+        if (typeof e.onUploadProgress === "function" && g.upload) {
+          g.upload.addEventListener("progress", e.onUploadProgress);
         }
         if (e.cancelToken) {
           e.cancelToken.promise.then(function onCanceled(e) {
-            if (!l) {
+            if (!g) {
               return;
             }
-            l.abort();
+            g.abort();
             p(e);
-            l = null;
+            g = null;
           });
         }
         if (c === undefined) {
           c = null;
         }
-        l.send(c);
+        g.send(c);
       });
     };
   },
@@ -1899,128 +1578,6 @@ module.exports = (function(e, t) {
       e.registerEndpoints = n.bind(null, e);
     }
   },
-  260: function(e, t, r) {
-    var n = r(357);
-    var i = r(654);
-    var s = r(614);
-    if (typeof s !== "function") {
-      s = s.EventEmitter;
-    }
-    var o;
-    if (process.__signal_exit_emitter__) {
-      o = process.__signal_exit_emitter__;
-    } else {
-      o = process.__signal_exit_emitter__ = new s();
-      o.count = 0;
-      o.emitted = {};
-    }
-    if (!o.infinite) {
-      o.setMaxListeners(Infinity);
-      o.infinite = true;
-    }
-    e.exports = function(e, t) {
-      n.equal(
-        typeof e,
-        "function",
-        "a callback must be provided for exit handler"
-      );
-      if (u === false) {
-        load();
-      }
-      var r = "exit";
-      if (t && t.alwaysLast) {
-        r = "afterexit";
-      }
-      var i = function() {
-        o.removeListener(r, e);
-        if (
-          o.listeners("exit").length === 0 &&
-          o.listeners("afterexit").length === 0
-        ) {
-          unload();
-        }
-      };
-      o.on(r, e);
-      return i;
-    };
-    e.exports.unload = unload;
-    function unload() {
-      if (!u) {
-        return;
-      }
-      u = false;
-      i.forEach(function(e) {
-        try {
-          process.removeListener(e, a[e]);
-        } catch (e) {}
-      });
-      process.emit = c;
-      process.reallyExit = p;
-      o.count -= 1;
-    }
-    function emit(e, t, r) {
-      if (o.emitted[e]) {
-        return;
-      }
-      o.emitted[e] = true;
-      o.emit(e, t, r);
-    }
-    var a = {};
-    i.forEach(function(e) {
-      a[e] = function listener() {
-        var t = process.listeners(e);
-        if (t.length === o.count) {
-          unload();
-          emit("exit", null, e);
-          emit("afterexit", null, e);
-          process.kill(process.pid, e);
-        }
-      };
-    });
-    e.exports.signals = function() {
-      return i;
-    };
-    e.exports.load = load;
-    var u = false;
-    function load() {
-      if (u) {
-        return;
-      }
-      u = true;
-      o.count += 1;
-      i = i.filter(function(e) {
-        try {
-          process.on(e, a[e]);
-          return true;
-        } catch (e) {
-          return false;
-        }
-      });
-      process.emit = processEmit;
-      process.reallyExit = processReallyExit;
-    }
-    var p = process.reallyExit;
-    function processReallyExit(e) {
-      process.exitCode = e || 0;
-      emit("exit", process.exitCode, null);
-      emit("afterexit", process.exitCode, null);
-      p.call(process, process.exitCode);
-    }
-    var c = process.emit;
-    function processEmit(e, t) {
-      if (e === "exit") {
-        if (t !== undefined) {
-          process.exitCode = t;
-        }
-        var r = c.apply(this, arguments);
-        emit("exit", process.exitCode, null);
-        emit("afterexit", process.exitCode, null);
-        return r;
-      } else {
-        return c.apply(this, arguments);
-      }
-    }
-  },
   265: function(e, t, r) {
     e.exports = getPage;
     const n = r(370);
@@ -2054,1180 +1611,28 @@ module.exports = (function(e, t) {
       return t;
     }
   },
-  280: function(e, t) {
-    t = e.exports = SemVer;
-    var r;
-    if (
-      typeof process === "object" &&
-      process.env &&
-      process.env.NODE_DEBUG &&
-      /\bsemver\b/i.test(process.env.NODE_DEBUG)
-    ) {
-      r = function() {
-        var e = Array.prototype.slice.call(arguments, 0);
-        e.unshift("SEMVER");
-        console.log.apply(console, e);
-      };
-    } else {
-      r = function() {};
-    }
-    t.SEMVER_SPEC_VERSION = "2.0.0";
-    var n = 256;
-    var i = Number.MAX_SAFE_INTEGER || 9007199254740991;
-    var s = 16;
-    var o = (t.re = []);
-    var a = (t.src = []);
-    var u = 0;
-    var p = u++;
-    a[p] = "0|[1-9]\\d*";
-    var c = u++;
-    a[c] = "[0-9]+";
-    var d = u++;
-    a[d] = "\\d*[a-zA-Z-][a-zA-Z0-9-]*";
-    var l = u++;
-    a[l] = "(" + a[p] + ")\\." + "(" + a[p] + ")\\." + "(" + a[p] + ")";
-    var g = u++;
-    a[g] = "(" + a[c] + ")\\." + "(" + a[c] + ")\\." + "(" + a[c] + ")";
-    var m = u++;
-    a[m] = "(?:" + a[p] + "|" + a[d] + ")";
-    var h = u++;
-    a[h] = "(?:" + a[c] + "|" + a[d] + ")";
-    var f = u++;
-    a[f] = "(?:-(" + a[m] + "(?:\\." + a[m] + ")*))";
-    var y = u++;
-    a[y] = "(?:-?(" + a[h] + "(?:\\." + a[h] + ")*))";
-    var b = u++;
-    a[b] = "[0-9A-Za-z-]+";
-    var _ = u++;
-    a[_] = "(?:\\+(" + a[b] + "(?:\\." + a[b] + ")*))";
-    var w = u++;
-    var q = "v?" + a[l] + a[f] + "?" + a[_] + "?";
-    a[w] = "^" + q + "$";
-    var v = "[v=\\s]*" + a[g] + a[y] + "?" + a[_] + "?";
-    var E = u++;
-    a[E] = "^" + v + "$";
-    var T = u++;
-    a[T] = "((?:<|>)?=?)";
-    var C = u++;
-    a[C] = a[c] + "|x|X|\\*";
-    var j = u++;
-    a[j] = a[p] + "|x|X|\\*";
-    var S = u++;
-    a[S] =
-      "[v=\\s]*(" +
-      a[j] +
-      ")" +
-      "(?:\\.(" +
-      a[j] +
-      ")" +
-      "(?:\\.(" +
-      a[j] +
-      ")" +
-      "(?:" +
-      a[f] +
-      ")?" +
-      a[_] +
-      "?" +
-      ")?)?";
-    var x = u++;
-    a[x] =
-      "[v=\\s]*(" +
-      a[C] +
-      ")" +
-      "(?:\\.(" +
-      a[C] +
-      ")" +
-      "(?:\\.(" +
-      a[C] +
-      ")" +
-      "(?:" +
-      a[y] +
-      ")?" +
-      a[_] +
-      "?" +
-      ")?)?";
-    var k = u++;
-    a[k] = "^" + a[T] + "\\s*" + a[S] + "$";
-    var O = u++;
-    a[O] = "^" + a[T] + "\\s*" + a[x] + "$";
-    var P = u++;
-    a[P] =
-      "(?:^|[^\\d])" +
-      "(\\d{1," +
-      s +
-      "})" +
-      "(?:\\.(\\d{1," +
-      s +
-      "}))?" +
-      "(?:\\.(\\d{1," +
-      s +
-      "}))?" +
-      "(?:$|[^\\d])";
-    var A = u++;
-    a[A] = "(?:~>?)";
-    var R = u++;
-    a[R] = "(\\s*)" + a[A] + "\\s+";
-    o[R] = new RegExp(a[R], "g");
-    var G = "$1~";
-    var F = u++;
-    a[F] = "^" + a[A] + a[S] + "$";
-    var B = u++;
-    a[B] = "^" + a[A] + a[x] + "$";
-    var D = u++;
-    a[D] = "(?:\\^)";
-    var L = u++;
-    a[L] = "(\\s*)" + a[D] + "\\s+";
-    o[L] = new RegExp(a[L], "g");
-    var U = "$1^";
-    var I = u++;
-    a[I] = "^" + a[D] + a[S] + "$";
-    var $ = u++;
-    a[$] = "^" + a[D] + a[x] + "$";
-    var H = u++;
-    a[H] = "^" + a[T] + "\\s*(" + v + ")$|^$";
-    var z = u++;
-    a[z] = "^" + a[T] + "\\s*(" + q + ")$|^$";
-    var N = u++;
-    a[N] = "(\\s*)" + a[T] + "\\s*(" + v + "|" + a[S] + ")";
-    o[N] = new RegExp(a[N], "g");
-    var V = "$1$2$3";
-    var K = u++;
-    a[K] = "^\\s*(" + a[S] + ")" + "\\s+-\\s+" + "(" + a[S] + ")" + "\\s*$";
-    var W = u++;
-    a[W] = "^\\s*(" + a[x] + ")" + "\\s+-\\s+" + "(" + a[x] + ")" + "\\s*$";
-    var X = u++;
-    a[X] = "(<|>)?=?\\s*\\*";
-    for (var Y = 0; Y < u; Y++) {
-      r(Y, a[Y]);
-      if (!o[Y]) {
-        o[Y] = new RegExp(a[Y]);
+  280: function(e) {
+    e.exports = register;
+    function register(e, t, r, n) {
+      if (typeof r !== "function") {
+        throw new Error("method for before hook must be a function");
       }
-    }
-    t.parse = parse;
-    function parse(e, t) {
-      if (!t || typeof t !== "object") {
-        t = { loose: !!t, includePrerelease: false };
+      if (!n) {
+        n = {};
       }
-      if (e instanceof SemVer) {
-        return e;
+      if (Array.isArray(t)) {
+        return t.reverse().reduce(function(t, r) {
+          return register.bind(null, e, r, t, n);
+        }, r)();
       }
-      if (typeof e !== "string") {
-        return null;
-      }
-      if (e.length > n) {
-        return null;
-      }
-      var r = t.loose ? o[E] : o[w];
-      if (!r.test(e)) {
-        return null;
-      }
-      try {
-        return new SemVer(e, t);
-      } catch (e) {
-        return null;
-      }
-    }
-    t.valid = valid;
-    function valid(e, t) {
-      var r = parse(e, t);
-      return r ? r.version : null;
-    }
-    t.clean = clean;
-    function clean(e, t) {
-      var r = parse(e.trim().replace(/^[=v]+/, ""), t);
-      return r ? r.version : null;
-    }
-    t.SemVer = SemVer;
-    function SemVer(e, t) {
-      if (!t || typeof t !== "object") {
-        t = { loose: !!t, includePrerelease: false };
-      }
-      if (e instanceof SemVer) {
-        if (e.loose === t.loose) {
-          return e;
-        } else {
-          e = e.version;
+      return Promise.resolve().then(function() {
+        if (!e.registry[t]) {
+          return r(n);
         }
-      } else if (typeof e !== "string") {
-        throw new TypeError("Invalid Version: " + e);
-      }
-      if (e.length > n) {
-        throw new TypeError("version is longer than " + n + " characters");
-      }
-      if (!(this instanceof SemVer)) {
-        return new SemVer(e, t);
-      }
-      r("SemVer", e, t);
-      this.options = t;
-      this.loose = !!t.loose;
-      var s = e.trim().match(t.loose ? o[E] : o[w]);
-      if (!s) {
-        throw new TypeError("Invalid Version: " + e);
-      }
-      this.raw = e;
-      this.major = +s[1];
-      this.minor = +s[2];
-      this.patch = +s[3];
-      if (this.major > i || this.major < 0) {
-        throw new TypeError("Invalid major version");
-      }
-      if (this.minor > i || this.minor < 0) {
-        throw new TypeError("Invalid minor version");
-      }
-      if (this.patch > i || this.patch < 0) {
-        throw new TypeError("Invalid patch version");
-      }
-      if (!s[4]) {
-        this.prerelease = [];
-      } else {
-        this.prerelease = s[4].split(".").map(function(e) {
-          if (/^[0-9]+$/.test(e)) {
-            var t = +e;
-            if (t >= 0 && t < i) {
-              return t;
-            }
-          }
-          return e;
-        });
-      }
-      this.build = s[5] ? s[5].split(".") : [];
-      this.format();
-    }
-    SemVer.prototype.format = function() {
-      this.version = this.major + "." + this.minor + "." + this.patch;
-      if (this.prerelease.length) {
-        this.version += "-" + this.prerelease.join(".");
-      }
-      return this.version;
-    };
-    SemVer.prototype.toString = function() {
-      return this.version;
-    };
-    SemVer.prototype.compare = function(e) {
-      r("SemVer.compare", this.version, this.options, e);
-      if (!(e instanceof SemVer)) {
-        e = new SemVer(e, this.options);
-      }
-      return this.compareMain(e) || this.comparePre(e);
-    };
-    SemVer.prototype.compareMain = function(e) {
-      if (!(e instanceof SemVer)) {
-        e = new SemVer(e, this.options);
-      }
-      return (
-        compareIdentifiers(this.major, e.major) ||
-        compareIdentifiers(this.minor, e.minor) ||
-        compareIdentifiers(this.patch, e.patch)
-      );
-    };
-    SemVer.prototype.comparePre = function(e) {
-      if (!(e instanceof SemVer)) {
-        e = new SemVer(e, this.options);
-      }
-      if (this.prerelease.length && !e.prerelease.length) {
-        return -1;
-      } else if (!this.prerelease.length && e.prerelease.length) {
-        return 1;
-      } else if (!this.prerelease.length && !e.prerelease.length) {
-        return 0;
-      }
-      var t = 0;
-      do {
-        var n = this.prerelease[t];
-        var i = e.prerelease[t];
-        r("prerelease compare", t, n, i);
-        if (n === undefined && i === undefined) {
-          return 0;
-        } else if (i === undefined) {
-          return 1;
-        } else if (n === undefined) {
-          return -1;
-        } else if (n === i) {
-          continue;
-        } else {
-          return compareIdentifiers(n, i);
-        }
-      } while (++t);
-    };
-    SemVer.prototype.inc = function(e, t) {
-      switch (e) {
-        case "premajor":
-          this.prerelease.length = 0;
-          this.patch = 0;
-          this.minor = 0;
-          this.major++;
-          this.inc("pre", t);
-          break;
-        case "preminor":
-          this.prerelease.length = 0;
-          this.patch = 0;
-          this.minor++;
-          this.inc("pre", t);
-          break;
-        case "prepatch":
-          this.prerelease.length = 0;
-          this.inc("patch", t);
-          this.inc("pre", t);
-          break;
-        case "prerelease":
-          if (this.prerelease.length === 0) {
-            this.inc("patch", t);
-          }
-          this.inc("pre", t);
-          break;
-        case "major":
-          if (
-            this.minor !== 0 ||
-            this.patch !== 0 ||
-            this.prerelease.length === 0
-          ) {
-            this.major++;
-          }
-          this.minor = 0;
-          this.patch = 0;
-          this.prerelease = [];
-          break;
-        case "minor":
-          if (this.patch !== 0 || this.prerelease.length === 0) {
-            this.minor++;
-          }
-          this.patch = 0;
-          this.prerelease = [];
-          break;
-        case "patch":
-          if (this.prerelease.length === 0) {
-            this.patch++;
-          }
-          this.prerelease = [];
-          break;
-        case "pre":
-          if (this.prerelease.length === 0) {
-            this.prerelease = [0];
-          } else {
-            var r = this.prerelease.length;
-            while (--r >= 0) {
-              if (typeof this.prerelease[r] === "number") {
-                this.prerelease[r]++;
-                r = -2;
-              }
-            }
-            if (r === -1) {
-              this.prerelease.push(0);
-            }
-          }
-          if (t) {
-            if (this.prerelease[0] === t) {
-              if (isNaN(this.prerelease[1])) {
-                this.prerelease = [t, 0];
-              }
-            } else {
-              this.prerelease = [t, 0];
-            }
-          }
-          break;
-        default:
-          throw new Error("invalid increment argument: " + e);
-      }
-      this.format();
-      this.raw = this.version;
-      return this;
-    };
-    t.inc = inc;
-    function inc(e, t, r, n) {
-      if (typeof r === "string") {
-        n = r;
-        r = undefined;
-      }
-      try {
-        return new SemVer(e, r).inc(t, n).version;
-      } catch (e) {
-        return null;
-      }
-    }
-    t.diff = diff;
-    function diff(e, t) {
-      if (eq(e, t)) {
-        return null;
-      } else {
-        var r = parse(e);
-        var n = parse(t);
-        var i = "";
-        if (r.prerelease.length || n.prerelease.length) {
-          i = "pre";
-          var s = "prerelease";
-        }
-        for (var o in r) {
-          if (o === "major" || o === "minor" || o === "patch") {
-            if (r[o] !== n[o]) {
-              return i + o;
-            }
-          }
-        }
-        return s;
-      }
-    }
-    t.compareIdentifiers = compareIdentifiers;
-    var J = /^[0-9]+$/;
-    function compareIdentifiers(e, t) {
-      var r = J.test(e);
-      var n = J.test(t);
-      if (r && n) {
-        e = +e;
-        t = +t;
-      }
-      return e === t ? 0 : r && !n ? -1 : n && !r ? 1 : e < t ? -1 : 1;
-    }
-    t.rcompareIdentifiers = rcompareIdentifiers;
-    function rcompareIdentifiers(e, t) {
-      return compareIdentifiers(t, e);
-    }
-    t.major = major;
-    function major(e, t) {
-      return new SemVer(e, t).major;
-    }
-    t.minor = minor;
-    function minor(e, t) {
-      return new SemVer(e, t).minor;
-    }
-    t.patch = patch;
-    function patch(e, t) {
-      return new SemVer(e, t).patch;
-    }
-    t.compare = compare;
-    function compare(e, t, r) {
-      return new SemVer(e, r).compare(new SemVer(t, r));
-    }
-    t.compareLoose = compareLoose;
-    function compareLoose(e, t) {
-      return compare(e, t, true);
-    }
-    t.rcompare = rcompare;
-    function rcompare(e, t, r) {
-      return compare(t, e, r);
-    }
-    t.sort = sort;
-    function sort(e, r) {
-      return e.sort(function(e, n) {
-        return t.compare(e, n, r);
+        return e.registry[t].reduce(function(e, t) {
+          return t.hook.bind(null, e, n);
+        }, r)();
       });
-    }
-    t.rsort = rsort;
-    function rsort(e, r) {
-      return e.sort(function(e, n) {
-        return t.rcompare(e, n, r);
-      });
-    }
-    t.gt = gt;
-    function gt(e, t, r) {
-      return compare(e, t, r) > 0;
-    }
-    t.lt = lt;
-    function lt(e, t, r) {
-      return compare(e, t, r) < 0;
-    }
-    t.eq = eq;
-    function eq(e, t, r) {
-      return compare(e, t, r) === 0;
-    }
-    t.neq = neq;
-    function neq(e, t, r) {
-      return compare(e, t, r) !== 0;
-    }
-    t.gte = gte;
-    function gte(e, t, r) {
-      return compare(e, t, r) >= 0;
-    }
-    t.lte = lte;
-    function lte(e, t, r) {
-      return compare(e, t, r) <= 0;
-    }
-    t.cmp = cmp;
-    function cmp(e, t, r, n) {
-      switch (t) {
-        case "===":
-          if (typeof e === "object") e = e.version;
-          if (typeof r === "object") r = r.version;
-          return e === r;
-        case "!==":
-          if (typeof e === "object") e = e.version;
-          if (typeof r === "object") r = r.version;
-          return e !== r;
-        case "":
-        case "=":
-        case "==":
-          return eq(e, r, n);
-        case "!=":
-          return neq(e, r, n);
-        case ">":
-          return gt(e, r, n);
-        case ">=":
-          return gte(e, r, n);
-        case "<":
-          return lt(e, r, n);
-        case "<=":
-          return lte(e, r, n);
-        default:
-          throw new TypeError("Invalid operator: " + t);
-      }
-    }
-    t.Comparator = Comparator;
-    function Comparator(e, t) {
-      if (!t || typeof t !== "object") {
-        t = { loose: !!t, includePrerelease: false };
-      }
-      if (e instanceof Comparator) {
-        if (e.loose === !!t.loose) {
-          return e;
-        } else {
-          e = e.value;
-        }
-      }
-      if (!(this instanceof Comparator)) {
-        return new Comparator(e, t);
-      }
-      r("comparator", e, t);
-      this.options = t;
-      this.loose = !!t.loose;
-      this.parse(e);
-      if (this.semver === Z) {
-        this.value = "";
-      } else {
-        this.value = this.operator + this.semver.version;
-      }
-      r("comp", this);
-    }
-    var Z = {};
-    Comparator.prototype.parse = function(e) {
-      var t = this.options.loose ? o[H] : o[z];
-      var r = e.match(t);
-      if (!r) {
-        throw new TypeError("Invalid comparator: " + e);
-      }
-      this.operator = r[1];
-      if (this.operator === "=") {
-        this.operator = "";
-      }
-      if (!r[2]) {
-        this.semver = Z;
-      } else {
-        this.semver = new SemVer(r[2], this.options.loose);
-      }
-    };
-    Comparator.prototype.toString = function() {
-      return this.value;
-    };
-    Comparator.prototype.test = function(e) {
-      r("Comparator.test", e, this.options.loose);
-      if (this.semver === Z) {
-        return true;
-      }
-      if (typeof e === "string") {
-        e = new SemVer(e, this.options);
-      }
-      return cmp(e, this.operator, this.semver, this.options);
-    };
-    Comparator.prototype.intersects = function(e, t) {
-      if (!(e instanceof Comparator)) {
-        throw new TypeError("a Comparator is required");
-      }
-      if (!t || typeof t !== "object") {
-        t = { loose: !!t, includePrerelease: false };
-      }
-      var r;
-      if (this.operator === "") {
-        r = new Range(e.value, t);
-        return satisfies(this.value, r, t);
-      } else if (e.operator === "") {
-        r = new Range(this.value, t);
-        return satisfies(e.semver, r, t);
-      }
-      var n =
-        (this.operator === ">=" || this.operator === ">") &&
-        (e.operator === ">=" || e.operator === ">");
-      var i =
-        (this.operator === "<=" || this.operator === "<") &&
-        (e.operator === "<=" || e.operator === "<");
-      var s = this.semver.version === e.semver.version;
-      var o =
-        (this.operator === ">=" || this.operator === "<=") &&
-        (e.operator === ">=" || e.operator === "<=");
-      var a =
-        cmp(this.semver, "<", e.semver, t) &&
-        (this.operator === ">=" || this.operator === ">") &&
-          (e.operator === "<=" || e.operator === "<");
-      var u =
-        cmp(this.semver, ">", e.semver, t) &&
-        (this.operator === "<=" || this.operator === "<") &&
-          (e.operator === ">=" || e.operator === ">");
-      return n || i || (s && o) || a || u;
-    };
-    t.Range = Range;
-    function Range(e, t) {
-      if (!t || typeof t !== "object") {
-        t = { loose: !!t, includePrerelease: false };
-      }
-      if (e instanceof Range) {
-        if (
-          e.loose === !!t.loose &&
-          e.includePrerelease === !!t.includePrerelease
-        ) {
-          return e;
-        } else {
-          return new Range(e.raw, t);
-        }
-      }
-      if (e instanceof Comparator) {
-        return new Range(e.value, t);
-      }
-      if (!(this instanceof Range)) {
-        return new Range(e, t);
-      }
-      this.options = t;
-      this.loose = !!t.loose;
-      this.includePrerelease = !!t.includePrerelease;
-      this.raw = e;
-      this.set = e
-        .split(/\s*\|\|\s*/)
-        .map(function(e) {
-          return this.parseRange(e.trim());
-        }, this)
-        .filter(function(e) {
-          return e.length;
-        });
-      if (!this.set.length) {
-        throw new TypeError("Invalid SemVer Range: " + e);
-      }
-      this.format();
-    }
-    Range.prototype.format = function() {
-      this.range = this.set
-        .map(function(e) {
-          return e.join(" ").trim();
-        })
-        .join("||")
-        .trim();
-      return this.range;
-    };
-    Range.prototype.toString = function() {
-      return this.range;
-    };
-    Range.prototype.parseRange = function(e) {
-      var t = this.options.loose;
-      e = e.trim();
-      var n = t ? o[W] : o[K];
-      e = e.replace(n, hyphenReplace);
-      r("hyphen replace", e);
-      e = e.replace(o[N], V);
-      r("comparator trim", e, o[N]);
-      e = e.replace(o[R], G);
-      e = e.replace(o[L], U);
-      e = e.split(/\s+/).join(" ");
-      var i = t ? o[H] : o[z];
-      var s = e
-        .split(" ")
-        .map(function(e) {
-          return parseComparator(e, this.options);
-        }, this)
-        .join(" ")
-        .split(/\s+/);
-      if (this.options.loose) {
-        s = s.filter(function(e) {
-          return !!e.match(i);
-        });
-      }
-      s = s.map(function(e) {
-        return new Comparator(e, this.options);
-      }, this);
-      return s;
-    };
-    Range.prototype.intersects = function(e, t) {
-      if (!(e instanceof Range)) {
-        throw new TypeError("a Range is required");
-      }
-      return this.set.some(function(r) {
-        return r.every(function(r) {
-          return e.set.some(function(e) {
-            return e.every(function(e) {
-              return r.intersects(e, t);
-            });
-          });
-        });
-      });
-    };
-    t.toComparators = toComparators;
-    function toComparators(e, t) {
-      return new Range(e, t).set.map(function(e) {
-        return e
-          .map(function(e) {
-            return e.value;
-          })
-          .join(" ")
-          .trim()
-          .split(" ");
-      });
-    }
-    function parseComparator(e, t) {
-      r("comp", e, t);
-      e = replaceCarets(e, t);
-      r("caret", e);
-      e = replaceTildes(e, t);
-      r("tildes", e);
-      e = replaceXRanges(e, t);
-      r("xrange", e);
-      e = replaceStars(e, t);
-      r("stars", e);
-      return e;
-    }
-    function isX(e) {
-      return !e || e.toLowerCase() === "x" || e === "*";
-    }
-    function replaceTildes(e, t) {
-      return e
-        .trim()
-        .split(/\s+/)
-        .map(function(e) {
-          return replaceTilde(e, t);
-        })
-        .join(" ");
-    }
-    function replaceTilde(e, t) {
-      var n = t.loose ? o[B] : o[F];
-      return e.replace(n, function(t, n, i, s, o) {
-        r("tilde", e, t, n, i, s, o);
-        var a;
-        if (isX(n)) {
-          a = "";
-        } else if (isX(i)) {
-          a = ">=" + n + ".0.0 <" + (+n + 1) + ".0.0";
-        } else if (isX(s)) {
-          a = ">=" + n + "." + i + ".0 <" + n + "." + (+i + 1) + ".0";
-        } else if (o) {
-          r("replaceTilde pr", o);
-          a =
-            ">=" +
-            n +
-            "." +
-            i +
-            "." +
-            s +
-            "-" +
-            o +
-            " <" +
-            n +
-            "." +
-            (+i + 1) +
-            ".0";
-        } else {
-          a = ">=" + n + "." + i + "." + s + " <" + n + "." + (+i + 1) + ".0";
-        }
-        r("tilde return", a);
-        return a;
-      });
-    }
-    function replaceCarets(e, t) {
-      return e
-        .trim()
-        .split(/\s+/)
-        .map(function(e) {
-          return replaceCaret(e, t);
-        })
-        .join(" ");
-    }
-    function replaceCaret(e, t) {
-      r("caret", e, t);
-      var n = t.loose ? o[$] : o[I];
-      return e.replace(n, function(t, n, i, s, o) {
-        r("caret", e, t, n, i, s, o);
-        var a;
-        if (isX(n)) {
-          a = "";
-        } else if (isX(i)) {
-          a = ">=" + n + ".0.0 <" + (+n + 1) + ".0.0";
-        } else if (isX(s)) {
-          if (n === "0") {
-            a = ">=" + n + "." + i + ".0 <" + n + "." + (+i + 1) + ".0";
-          } else {
-            a = ">=" + n + "." + i + ".0 <" + (+n + 1) + ".0.0";
-          }
-        } else if (o) {
-          r("replaceCaret pr", o);
-          if (n === "0") {
-            if (i === "0") {
-              a =
-                ">=" +
-                n +
-                "." +
-                i +
-                "." +
-                s +
-                "-" +
-                o +
-                " <" +
-                n +
-                "." +
-                i +
-                "." +
-                (+s + 1);
-            } else {
-              a =
-                ">=" +
-                n +
-                "." +
-                i +
-                "." +
-                s +
-                "-" +
-                o +
-                " <" +
-                n +
-                "." +
-                (+i + 1) +
-                ".0";
-            }
-          } else {
-            a =
-              ">=" + n + "." + i + "." + s + "-" + o + " <" + (+n + 1) + ".0.0";
-          }
-        } else {
-          r("no pr");
-          if (n === "0") {
-            if (i === "0") {
-              a =
-                ">=" +
-                n +
-                "." +
-                i +
-                "." +
-                s +
-                " <" +
-                n +
-                "." +
-                i +
-                "." +
-                (+s + 1);
-            } else {
-              a =
-                ">=" + n + "." + i + "." + s + " <" + n + "." + (+i + 1) + ".0";
-            }
-          } else {
-            a = ">=" + n + "." + i + "." + s + " <" + (+n + 1) + ".0.0";
-          }
-        }
-        r("caret return", a);
-        return a;
-      });
-    }
-    function replaceXRanges(e, t) {
-      r("replaceXRanges", e, t);
-      return e
-        .split(/\s+/)
-        .map(function(e) {
-          return replaceXRange(e, t);
-        })
-        .join(" ");
-    }
-    function replaceXRange(e, t) {
-      e = e.trim();
-      var n = t.loose ? o[O] : o[k];
-      return e.replace(n, function(t, n, i, s, o, a) {
-        r("xRange", e, t, n, i, s, o, a);
-        var u = isX(i);
-        var p = u || isX(s);
-        var c = p || isX(o);
-        var d = c;
-        if (n === "=" && d) {
-          n = "";
-        }
-        if (u) {
-          if (n === ">" || n === "<") {
-            t = "<0.0.0";
-          } else {
-            t = "*";
-          }
-        } else if (n && d) {
-          if (p) {
-            s = 0;
-          }
-          o = 0;
-          if (n === ">") {
-            n = ">=";
-            if (p) {
-              i = +i + 1;
-              s = 0;
-              o = 0;
-            } else {
-              s = +s + 1;
-              o = 0;
-            }
-          } else if (n === "<=") {
-            n = "<";
-            if (p) {
-              i = +i + 1;
-            } else {
-              s = +s + 1;
-            }
-          }
-          t = n + i + "." + s + "." + o;
-        } else if (p) {
-          t = ">=" + i + ".0.0 <" + (+i + 1) + ".0.0";
-        } else if (c) {
-          t = ">=" + i + "." + s + ".0 <" + i + "." + (+s + 1) + ".0";
-        }
-        r("xRange return", t);
-        return t;
-      });
-    }
-    function replaceStars(e, t) {
-      r("replaceStars", e, t);
-      return e.trim().replace(o[X], "");
-    }
-    function hyphenReplace(e, t, r, n, i, s, o, a, u, p, c, d, l) {
-      if (isX(r)) {
-        t = "";
-      } else if (isX(n)) {
-        t = ">=" + r + ".0.0";
-      } else if (isX(i)) {
-        t = ">=" + r + "." + n + ".0";
-      } else {
-        t = ">=" + t;
-      }
-      if (isX(u)) {
-        a = "";
-      } else if (isX(p)) {
-        a = "<" + (+u + 1) + ".0.0";
-      } else if (isX(c)) {
-        a = "<" + u + "." + (+p + 1) + ".0";
-      } else if (d) {
-        a = "<=" + u + "." + p + "." + c + "-" + d;
-      } else {
-        a = "<=" + a;
-      }
-      return (t + " " + a).trim();
-    }
-    Range.prototype.test = function(e) {
-      if (!e) {
-        return false;
-      }
-      if (typeof e === "string") {
-        e = new SemVer(e, this.options);
-      }
-      for (var t = 0; t < this.set.length; t++) {
-        if (testSet(this.set[t], e, this.options)) {
-          return true;
-        }
-      }
-      return false;
-    };
-    function testSet(e, t, n) {
-      for (var i = 0; i < e.length; i++) {
-        if (!e[i].test(t)) {
-          return false;
-        }
-      }
-      if (t.prerelease.length && !n.includePrerelease) {
-        for (i = 0; i < e.length; i++) {
-          r(e[i].semver);
-          if (e[i].semver === Z) {
-            continue;
-          }
-          if (e[i].semver.prerelease.length > 0) {
-            var s = e[i].semver;
-            if (
-              s.major === t.major &&
-              s.minor === t.minor &&
-              s.patch === t.patch
-            ) {
-              return true;
-            }
-          }
-        }
-        return false;
-      }
-      return true;
-    }
-    t.satisfies = satisfies;
-    function satisfies(e, t, r) {
-      try {
-        t = new Range(t, r);
-      } catch (e) {
-        return false;
-      }
-      return t.test(e);
-    }
-    t.maxSatisfying = maxSatisfying;
-    function maxSatisfying(e, t, r) {
-      var n = null;
-      var i = null;
-      try {
-        var s = new Range(t, r);
-      } catch (e) {
-        return null;
-      }
-      e.forEach(function(e) {
-        if (s.test(e)) {
-          if (!n || i.compare(e) === -1) {
-            n = e;
-            i = new SemVer(n, r);
-          }
-        }
-      });
-      return n;
-    }
-    t.minSatisfying = minSatisfying;
-    function minSatisfying(e, t, r) {
-      var n = null;
-      var i = null;
-      try {
-        var s = new Range(t, r);
-      } catch (e) {
-        return null;
-      }
-      e.forEach(function(e) {
-        if (s.test(e)) {
-          if (!n || i.compare(e) === 1) {
-            n = e;
-            i = new SemVer(n, r);
-          }
-        }
-      });
-      return n;
-    }
-    t.minVersion = minVersion;
-    function minVersion(e, t) {
-      e = new Range(e, t);
-      var r = new SemVer("0.0.0");
-      if (e.test(r)) {
-        return r;
-      }
-      r = new SemVer("0.0.0-0");
-      if (e.test(r)) {
-        return r;
-      }
-      r = null;
-      for (var n = 0; n < e.set.length; ++n) {
-        var i = e.set[n];
-        i.forEach(function(e) {
-          var t = new SemVer(e.semver.version);
-          switch (e.operator) {
-            case ">":
-              if (t.prerelease.length === 0) {
-                t.patch++;
-              } else {
-                t.prerelease.push(0);
-              }
-              t.raw = t.format();
-            case "":
-            case ">=":
-              if (!r || gt(r, t)) {
-                r = t;
-              }
-              break;
-            case "<":
-            case "<=":
-              break;
-            default:
-              throw new Error("Unexpected operation: " + e.operator);
-          }
-        });
-      }
-      if (r && e.test(r)) {
-        return r;
-      }
-      return null;
-    }
-    t.validRange = validRange;
-    function validRange(e, t) {
-      try {
-        return new Range(e, t).range || "*";
-      } catch (e) {
-        return null;
-      }
-    }
-    t.ltr = ltr;
-    function ltr(e, t, r) {
-      return outside(e, t, "<", r);
-    }
-    t.gtr = gtr;
-    function gtr(e, t, r) {
-      return outside(e, t, ">", r);
-    }
-    t.outside = outside;
-    function outside(e, t, r, n) {
-      e = new SemVer(e, n);
-      t = new Range(t, n);
-      var i, s, o, a, u;
-      switch (r) {
-        case ">":
-          i = gt;
-          s = lte;
-          o = lt;
-          a = ">";
-          u = ">=";
-          break;
-        case "<":
-          i = lt;
-          s = gte;
-          o = gt;
-          a = "<";
-          u = "<=";
-          break;
-        default:
-          throw new TypeError('Must provide a hilo val of "<" or ">"');
-      }
-      if (satisfies(e, t, n)) {
-        return false;
-      }
-      for (var p = 0; p < t.set.length; ++p) {
-        var c = t.set[p];
-        var d = null;
-        var l = null;
-        c.forEach(function(e) {
-          if (e.semver === Z) {
-            e = new Comparator(">=0.0.0");
-          }
-          d = d || e;
-          l = l || e;
-          if (i(e.semver, d.semver, n)) {
-            d = e;
-          } else if (o(e.semver, l.semver, n)) {
-            l = e;
-          }
-        });
-        if (d.operator === a || d.operator === u) {
-          return false;
-        }
-        if ((!l.operator || l.operator === a) && s(e, l.semver)) {
-          return false;
-        } else if (l.operator === u && o(e, l.semver)) {
-          return false;
-        }
-      }
-      return true;
-    }
-    t.prerelease = prerelease;
-    function prerelease(e, t) {
-      var r = parse(e, t);
-      return r && r.prerelease.length ? r.prerelease : null;
-    }
-    t.intersects = intersects;
-    function intersects(e, t, r) {
-      e = new Range(e, r);
-      t = new Range(t, r);
-      return e.intersects(t);
-    }
-    t.coerce = coerce;
-    function coerce(e) {
-      if (e instanceof SemVer) {
-        return e;
-      }
-      if (typeof e !== "string") {
-        return null;
-      }
-      var t = e.match(o[P]);
-      if (t == null) {
-        return null;
-      }
-      return parse(t[1] + "." + (t[2] || "0") + "." + (t[3] || "0"));
     }
   },
   283: function(e, t, r) {
@@ -3305,7 +1710,7 @@ module.exports = (function(e, t) {
     e.exports = parseOptions;
     const { Deprecation: n } = r(692);
     const { getUserAgent: i } = r(796);
-    const s = r(969);
+    const s = r(49);
     const o = r(215);
     const a = s((e, t) => e.warn(t));
     const u = s((e, t) => e.warn(t));
@@ -3383,7 +1788,7 @@ module.exports = (function(e, t) {
   301: function(e, t, r) {
     e.exports = normalizePaginatedListResponse;
     const { Deprecation: n } = r(692);
-    const i = r(969);
+    const i = r(49);
     const s = i((e, t) => e.warn(t));
     const o = i((e, t) => e.warn(t));
     const a = i((e, t) => e.warn(t));
@@ -3391,32 +1796,32 @@ module.exports = (function(e, t) {
     const p = /^\/repos\/[^/]+\/[^/]+\/commits\/[^/]+\/(check-runs|check-suites)/;
     const c = /^\/installation\/repositories/;
     const d = /^\/user\/installations/;
-    const l = /^\/orgs\/[^/]+\/installations/;
+    const g = /^\/orgs\/[^/]+\/installations/;
     function normalizePaginatedListResponse(e, t, r) {
       const i = t.replace(e.request.endpoint.DEFAULTS.baseUrl, "");
-      if (!u.test(i) && !p.test(i) && !c.test(i) && !d.test(i) && !l.test(i)) {
+      if (!u.test(i) && !p.test(i) && !c.test(i) && !d.test(i) && !g.test(i)) {
         return;
       }
-      const g = r.data.incomplete_results;
+      const l = r.data.incomplete_results;
       const m = r.data.repository_selection;
       const h = r.data.total_count;
       delete r.data.incomplete_results;
       delete r.data.repository_selection;
       delete r.data.total_count;
-      const f = Object.keys(r.data)[0];
-      r.data = r.data[f];
-      Object.defineProperty(r.data, f, {
+      const y = Object.keys(r.data)[0];
+      r.data = r.data[y];
+      Object.defineProperty(r.data, y, {
         get() {
           a(
             e.log,
             new n(
-              `[@octokit/rest] "result.data.${f}" is deprecated. Use "result.data" instead`
+              `[@octokit/rest] "result.data.${y}" is deprecated. Use "result.data" instead`
             )
           );
           return r.data;
         }
       });
-      if (typeof g !== "undefined") {
+      if (typeof l !== "undefined") {
         Object.defineProperty(r.data, "incomplete_results", {
           get() {
             s(
@@ -3425,7 +1830,7 @@ module.exports = (function(e, t) {
                 '[@octokit/rest] "result.data.incomplete_results" is deprecated.'
               )
             );
-            return g;
+            return l;
           }
         });
       }
@@ -3456,40 +1861,6 @@ module.exports = (function(e, t) {
   316: function(e, t, r) {
     const n = r(47);
     e.exports = n();
-  },
-  323: function(e) {
-    "use strict";
-    var t = (e.exports = function(e) {
-      return (
-        e !== null && typeof e === "object" && typeof e.pipe === "function"
-      );
-    });
-    t.writable = function(e) {
-      return (
-        t(e) &&
-        e.writable !== false &&
-        typeof e._write === "function" &&
-        typeof e._writableState === "object"
-      );
-    };
-    t.readable = function(e) {
-      return (
-        t(e) &&
-        e.readable !== false &&
-        typeof e._read === "function" &&
-        typeof e._readableState === "object"
-      );
-    };
-    t.duplex = function(e) {
-      return t.writable(e) && t.readable(e);
-    };
-    t.transform = function(e) {
-      return (
-        t.duplex(e) &&
-        typeof e._transform === "function" &&
-        typeof e._transformState === "object"
-      );
-    };
   },
   336: function(e, t, r) {
     e.exports = hasLastPage;
@@ -3529,13 +1900,13 @@ module.exports = (function(e, t) {
           p = i(t, u);
           c = u === "headers" || (typeof p === "object" && p !== null);
         }
-        const l = d
+        const g = d
           ? (i(t, u) || []).map(t => t[e.split(/\./).pop()])
           : [i(t, e)];
-        l.forEach((r, i) => {
+        g.forEach((r, i) => {
           const u = typeof r !== "undefined";
           const p = r === null;
-          const l = d ? e.replace(/\[\]/, `[${i}]`) : e;
+          const g = d ? e.replace(/\[\]/, `[${i}]`) : e;
           if (!o.required && !u) {
             return;
           }
@@ -3546,11 +1917,11 @@ module.exports = (function(e, t) {
             return;
           }
           if (!o.allowNull && p) {
-            throw new n(`'${l}' cannot be null`, 400, { request: t });
+            throw new n(`'${g}' cannot be null`, 400, { request: t });
           }
           if (o.required && !u) {
             throw new n(
-              `Empty value for parameter '${l}': ${JSON.stringify(r)}`,
+              `Empty value for parameter '${g}': ${JSON.stringify(r)}`,
               400,
               { request: t }
             );
@@ -3560,7 +1931,7 @@ module.exports = (function(e, t) {
             r = parseInt(r, 10);
             if (isNaN(r)) {
               throw new n(
-                `Invalid value for parameter '${l}': ${JSON.stringify(
+                `Invalid value for parameter '${g}': ${JSON.stringify(
                   e
                 )} is NaN`,
                 400,
@@ -3570,7 +1941,7 @@ module.exports = (function(e, t) {
           }
           if (o.enum && o.enum.indexOf(String(r)) === -1) {
             throw new n(
-              `Invalid value for parameter '${l}': ${JSON.stringify(r)}`,
+              `Invalid value for parameter '${g}': ${JSON.stringify(r)}`,
               400,
               { request: t }
             );
@@ -3579,7 +1950,7 @@ module.exports = (function(e, t) {
             const e = new RegExp(o.validation);
             if (!e.test(r)) {
               throw new n(
-                `Invalid value for parameter '${l}': ${JSON.stringify(r)}`,
+                `Invalid value for parameter '${g}': ${JSON.stringify(r)}`,
                 400,
                 { request: t }
               );
@@ -3590,7 +1961,7 @@ module.exports = (function(e, t) {
               r = JSON.parse(r);
             } catch (e) {
               throw new n(
-                `JSON parse error of value for parameter '${l}': ${JSON.stringify(
+                `JSON parse error of value for parameter '${g}': ${JSON.stringify(
                   r
                 )}`,
                 400,
@@ -3598,7 +1969,7 @@ module.exports = (function(e, t) {
               );
             }
           }
-          s(t, o.mapTo || l, r);
+          s(t, o.mapTo || g, r);
         });
       });
       return t;
@@ -3673,39 +2044,54 @@ module.exports = (function(e, t) {
     e.exports = u;
     e.exports.default = u;
   },
+  356: function(e, t) {
+    "use strict";
+    Object.defineProperty(t, "__esModule", { value: true });
+    function isObject(e) {
+      return Object.prototype.toString.call(e) === "[object Object]";
+    }
+    function isPlainObject(e) {
+      var t, r;
+      if (isObject(e) === false) return false;
+      t = e.constructor;
+      if (t === undefined) return true;
+      r = t.prototype;
+      if (isObject(r) === false) return false;
+      if (r.hasOwnProperty("isPrototypeOf") === false) {
+        return false;
+      }
+      return true;
+    }
+    t.isPlainObject = isPlainObject;
+  },
   357: function(e) {
     e.exports = require("assert");
   },
   361: function(e) {
     e.exports = {
-      _args: [["axios@0.19.0", "/Users/matan/dev/waka-box"]],
-      _from: "axios@0.19.0",
-      _id: "axios@0.19.0",
-      _inBundle: false,
-      _integrity:
-        "sha512-1uvKqKQta3KBxIz14F2v06AEHZ/dIoeKfbTRkK1E5oqjDnuEerLmYTgJB5AiQZHJcljpg1TuRzdjDR06qNk0DQ==",
-      _location: "/axios",
-      _phantomChildren: {},
-      _requested: {
-        type: "version",
-        registry: true,
-        raw: "axios@0.19.0",
-        name: "axios",
-        escapedName: "axios",
-        rawSpec: "0.19.0",
-        saveSpec: null,
-        fetchSpec: "0.19.0"
-      },
-      _requiredBy: ["/"],
-      _resolved: "https://registry.npmjs.org/axios/-/axios-0.19.0.tgz",
-      _spec: "0.19.0",
-      _where: "/Users/matan/dev/waka-box",
-      author: { name: "Matt Zabriskie" },
-      browser: { "./lib/adapters/http.js": "./lib/adapters/xhr.js" },
-      bugs: { url: "https://github.com/axios/axios/issues" },
-      bundlesize: [{ path: "./dist/axios.min.js", threshold: "5kB" }],
-      dependencies: { "follow-redirects": "1.5.10", "is-buffer": "^2.0.2" },
+      name: "axios",
+      version: "0.19.0",
       description: "Promise based HTTP client for the browser and node.js",
+      main: "index.js",
+      scripts: {
+        test: "grunt test && bundlesize",
+        start: "node ./sandbox/server.js",
+        build: "NODE_ENV=production grunt build",
+        preversion: "npm test",
+        version:
+          "npm run build && grunt version && git add -A dist && git add CHANGELOG.md bower.json package.json",
+        postversion: "git push && git push --tags",
+        examples: "node ./examples/server.js",
+        coveralls:
+          "cat coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
+        fix: "eslint --fix lib/**/*.js"
+      },
+      repository: { type: "git", url: "https://github.com/axios/axios.git" },
+      keywords: ["xhr", "http", "ajax", "promise", "node"],
+      author: "Matt Zabriskie",
+      license: "MIT",
+      bugs: { url: "https://github.com/axios/axios/issues" },
+      homepage: "https://github.com/axios/axios",
       devDependencies: {
         bundlesize: "^0.17.0",
         coveralls: "^3.0.0",
@@ -3743,55 +2129,11 @@ module.exports = (function(e, t) {
         webpack: "^1.13.1",
         "webpack-dev-server": "^1.14.1"
       },
-      homepage: "https://github.com/axios/axios",
-      keywords: ["xhr", "http", "ajax", "promise", "node"],
-      license: "MIT",
-      main: "index.js",
-      name: "axios",
-      repository: {
-        type: "git",
-        url: "git+https://github.com/axios/axios.git"
-      },
-      scripts: {
-        build: "NODE_ENV=production grunt build",
-        coveralls:
-          "cat coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
-        examples: "node ./examples/server.js",
-        fix: "eslint --fix lib/**/*.js",
-        postversion: "git push && git push --tags",
-        preversion: "npm test",
-        start: "node ./sandbox/server.js",
-        test: "grunt test && bundlesize",
-        version:
-          "npm run build && grunt version && git add -A dist && git add CHANGELOG.md bower.json package.json"
-      },
+      browser: { "./lib/adapters/http.js": "./lib/adapters/xhr.js" },
       typings: "./index.d.ts",
-      version: "0.19.0"
+      dependencies: { "follow-redirects": "1.5.10", "is-buffer": "^2.0.2" },
+      bundlesize: [{ path: "./dist/axios.min.js", threshold: "5kB" }]
     };
-  },
-  363: function(e) {
-    e.exports = register;
-    function register(e, t, r, n) {
-      if (typeof r !== "function") {
-        throw new Error("method for before hook must be a function");
-      }
-      if (!n) {
-        n = {};
-      }
-      if (Array.isArray(t)) {
-        return t.reverse().reduce(function(t, r) {
-          return register.bind(null, e, r, t, n);
-        }, r)();
-      }
-      return Promise.resolve().then(function() {
-        if (!e.registry[t]) {
-          return r(n);
-        }
-        return e.registry[t].reduce(function(e, t) {
-          return t.hook.bind(null, e, n);
-        }, r)();
-      });
-    }
   },
   364: function(e) {
     "use strict";
@@ -3869,10 +2211,7 @@ module.exports = (function(e, t) {
   385: function(e, t, r) {
     "use strict";
     Object.defineProperty(t, "__esModule", { value: true });
-    function _interopDefault(e) {
-      return e && typeof e === "object" && "default" in e ? e["default"] : e;
-    }
-    var n = _interopDefault(r(696));
+    var n = r(356);
     var i = r(796);
     function lowercaseKeys(e) {
       if (!e) {
@@ -3886,7 +2225,7 @@ module.exports = (function(e, t) {
     function mergeDeep(e, t) {
       const r = Object.assign({}, e);
       Object.keys(t).forEach(i => {
-        if (n(t[i])) {
+        if (n.isPlainObject(t[i])) {
           if (!(i in e)) Object.assign(r, { [i]: t[i] });
           else r[i] = mergeDeep(e[i], t[i]);
         } else {
@@ -3894,6 +2233,14 @@ module.exports = (function(e, t) {
         }
       });
       return r;
+    }
+    function removeUndefinedProperties(e) {
+      for (const t in e) {
+        if (e[t] === undefined) {
+          delete e[t];
+        }
+      }
+      return e;
     }
     function merge(e, t, r) {
       if (typeof t === "string") {
@@ -3903,6 +2250,8 @@ module.exports = (function(e, t) {
         r = Object.assign({}, t);
       }
       r.headers = lowercaseKeys(r.headers);
+      removeUndefinedProperties(r);
+      removeUndefinedProperties(r.headers);
       const n = mergeDeep(e || {}, r);
       if (e && e.mediaType.previews.length) {
         n.mediaType.previews = e.mediaType.previews
@@ -4092,7 +2441,7 @@ module.exports = (function(e, t) {
     }
     function parse(e) {
       let t = e.method.toUpperCase();
-      let r = (e.url || "/").replace(/:([a-z]\w+)/g, "{+$1}");
+      let r = (e.url || "/").replace(/:([a-z]\w+)/g, "{$1}");
       let n = Object.assign({}, e.headers);
       let i;
       let s = omit(e, [
@@ -4174,7 +2523,7 @@ module.exports = (function(e, t) {
         parse: parse
       });
     }
-    const o = "5.5.1";
+    const o = "6.0.11";
     const a = `octokit-endpoint.js/${o} ${i.getUserAgent()}`;
     const u = {
       method: "GET",
@@ -4184,29 +2533,6 @@ module.exports = (function(e, t) {
     };
     const p = withDefaults(null, u);
     t.endpoint = p;
-  },
-  389: function(e, t, r) {
-    "use strict";
-    const n = r(747);
-    const i = r(866);
-    function readShebang(e) {
-      const t = 150;
-      let r;
-      if (Buffer.alloc) {
-        r = Buffer.alloc(t);
-      } else {
-        r = new Buffer(t);
-        r.fill(0);
-      }
-      let s;
-      try {
-        s = n.openSync(e, "r");
-        n.readSync(s, r, 0, t, 0);
-        n.closeSync(s);
-      } catch (e) {}
-      return i(r.toString());
-    }
-    e.exports = readShebang;
   },
   402: function(e, t, r) {
     e.exports = Octokit;
@@ -4245,115 +2571,12 @@ module.exports = (function(e, t) {
   413: function(e) {
     e.exports = require("stream");
   },
-  427: function(e, t, r) {
-    "use strict";
-    const n = r(669);
-    let i;
-    if (typeof n.getSystemErrorName === "function") {
-      e.exports = n.getSystemErrorName;
-    } else {
-      try {
-        i = process.binding("uv");
-        if (typeof i.errname !== "function") {
-          throw new TypeError("uv.errname is not a function");
-        }
-      } catch (e) {
-        console.error(
-          "execa/lib/errname: unable to establish process.binding('uv')",
-          e
-        );
-        i = null;
-      }
-      e.exports = e => errname(i, e);
-    }
-    e.exports.__test__ = errname;
-    function errname(e, t) {
-      if (e) {
-        return e.errname(t);
-      }
-      if (!(t < 0)) {
-        throw new Error("err >= 0");
-      }
-      return `Unknown system error ${t}`;
-    }
-  },
   430: function(e, t, r) {
     e.exports = octokitValidate;
     const n = r(348);
     function octokitValidate(e) {
       e.hook.before("request", n.bind(null, e));
     }
-  },
-  453: function(e, t, r) {
-    var n = r(969);
-    var i = r(9);
-    var s = r(747);
-    var o = function() {};
-    var a = /^v?\.0/.test(process.version);
-    var u = function(e) {
-      return typeof e === "function";
-    };
-    var p = function(e) {
-      if (!a) return false;
-      if (!s) return false;
-      return (
-        (e instanceof (s.ReadStream || o) ||
-          e instanceof (s.WriteStream || o)) &&
-        u(e.close)
-      );
-    };
-    var c = function(e) {
-      return e.setHeader && u(e.abort);
-    };
-    var d = function(e, t, r, s) {
-      s = n(s);
-      var a = false;
-      e.on("close", function() {
-        a = true;
-      });
-      i(e, { readable: t, writable: r }, function(e) {
-        if (e) return s(e);
-        a = true;
-        s();
-      });
-      var d = false;
-      return function(t) {
-        if (a) return;
-        if (d) return;
-        d = true;
-        if (p(e)) return e.close(o);
-        if (c(e)) return e.abort();
-        if (u(e.destroy)) return e.destroy();
-        s(t || new Error("stream was destroyed"));
-      };
-    };
-    var l = function(e) {
-      e();
-    };
-    var g = function(e, t) {
-      return e.pipe(t);
-    };
-    var m = function() {
-      var e = Array.prototype.slice.call(arguments);
-      var t = (u(e[e.length - 1] || o) && e.pop()) || o;
-      if (Array.isArray(e[0])) e = e[0];
-      if (e.length < 2)
-        throw new Error("pump requires two streams per minimum");
-      var r;
-      var n = e.map(function(i, s) {
-        var o = s < e.length - 1;
-        var a = s > 0;
-        return d(i, o, a, function(e) {
-          if (!r) r = e;
-          if (e) n.forEach(l);
-          if (o) return;
-          n.forEach(l);
-          t(r);
-        });
-      });
-      return e.reduce(g);
-    };
-    e.exports = m;
   },
   454: function(e, t, r) {
     "use strict";
@@ -4481,8 +2704,8 @@ module.exports = (function(e, t) {
     try {
       d = r(18).convert;
     } catch (e) {}
-    const l = Symbol("Body internals");
-    const g = n.PassThrough;
+    const g = Symbol("Body internals");
+    const l = n.PassThrough;
     function Body(e) {
       var t = this;
       var r =
@@ -4507,7 +2730,7 @@ module.exports = (function(e, t) {
       else {
         e = Buffer.from(String(e));
       }
-      this[l] = { body: e, disturbed: false, error: null };
+      this[g] = { body: e, disturbed: false, error: null };
       this.size = s;
       this.timeout = a;
       if (e instanceof n) {
@@ -4520,16 +2743,16 @@ module.exports = (function(e, t) {
                   "system",
                   e
                 );
-          t[l].error = r;
+          t[g].error = r;
         });
       }
     }
     Body.prototype = {
       get body() {
-        return this[l].body;
+        return this[g].body;
       },
       get bodyUsed() {
-        return this[l].disturbed;
+        return this[g].disturbed;
       },
       arrayBuffer() {
         return consumeBody.call(this).then(function(e) {
@@ -4592,14 +2815,14 @@ module.exports = (function(e, t) {
     };
     function consumeBody() {
       var e = this;
-      if (this[l].disturbed) {
+      if (this[g].disturbed) {
         return Body.Promise.reject(
           new TypeError(`body used already for: ${this.url}`)
         );
       }
-      this[l].disturbed = true;
-      if (this[l].error) {
-        return Body.Promise.reject(this[l].error);
+      this[g].disturbed = true;
+      if (this[g].error) {
+        return Body.Promise.reject(this[g].error);
       }
       let t = this.body;
       if (t === null) {
@@ -4760,11 +2983,11 @@ module.exports = (function(e, t) {
         throw new Error("cannot clone body after it is used");
       }
       if (i instanceof n && typeof i.getBoundary !== "function") {
-        t = new g();
-        r = new g();
+        t = new l();
+        r = new l();
         i.pipe(t);
         i.pipe(r);
-        e[l].body = t;
+        e[g].body = t;
         i = r;
       }
       return i;
@@ -4849,14 +3072,14 @@ module.exports = (function(e, t) {
       }
       return undefined;
     }
-    const f = Symbol("map");
+    const y = Symbol("map");
     class Headers {
       constructor() {
         let e =
           arguments.length > 0 && arguments[0] !== undefined
             ? arguments[0]
             : undefined;
-        this[f] = Object.create(null);
+        this[y] = Object.create(null);
         if (e instanceof Headers) {
           const t = e.raw();
           const r = Object.keys(t);
@@ -4905,11 +3128,11 @@ module.exports = (function(e, t) {
       get(e) {
         e = `${e}`;
         validateName(e);
-        const t = find(this[f], e);
+        const t = find(this[y], e);
         if (t === undefined) {
           return null;
         }
-        return this[f][t].join(", ");
+        return this[y][t].join(", ");
       }
       forEach(e) {
         let t =
@@ -4932,36 +3155,36 @@ module.exports = (function(e, t) {
         t = `${t}`;
         validateName(e);
         validateValue(t);
-        const r = find(this[f], e);
-        this[f][r !== undefined ? r : e] = [t];
+        const r = find(this[y], e);
+        this[y][r !== undefined ? r : e] = [t];
       }
       append(e, t) {
         e = `${e}`;
         t = `${t}`;
         validateName(e);
         validateValue(t);
-        const r = find(this[f], e);
+        const r = find(this[y], e);
         if (r !== undefined) {
-          this[f][r].push(t);
+          this[y][r].push(t);
         } else {
-          this[f][e] = [t];
+          this[y][e] = [t];
         }
       }
       has(e) {
         e = `${e}`;
         validateName(e);
-        return find(this[f], e) !== undefined;
+        return find(this[y], e) !== undefined;
       }
       delete(e) {
         e = `${e}`;
         validateName(e);
-        const t = find(this[f], e);
+        const t = find(this[y], e);
         if (t !== undefined) {
-          delete this[f][t];
+          delete this[y][t];
         }
       }
       raw() {
-        return this[f];
+        return this[y];
       }
       keys() {
         return createHeadersIterator(this, "key");
@@ -4996,7 +3219,7 @@ module.exports = (function(e, t) {
         arguments.length > 1 && arguments[1] !== undefined
           ? arguments[1]
           : "key+value";
-      const r = Object.keys(e[f]).sort();
+      const r = Object.keys(e[y]).sort();
       return r.map(
         t === "key"
           ? function(e) {
@@ -5004,17 +3227,17 @@ module.exports = (function(e, t) {
             }
           : t === "value"
           ? function(t) {
-              return e[f][t].join(", ");
+              return e[y][t].join(", ");
             }
           : function(t) {
-              return [t.toLowerCase(), e[f][t].join(", ")];
+              return [t.toLowerCase(), e[y][t].join(", ")];
             }
       );
     }
-    const y = Symbol("internal");
+    const f = Symbol("internal");
     function createHeadersIterator(e, t) {
       const r = Object.create(b);
-      r[y] = { target: e, kind: t, index: 0 };
+      r[f] = { target: e, kind: t, index: 0 };
       return r;
     }
     const b = Object.setPrototypeOf(
@@ -5023,7 +3246,7 @@ module.exports = (function(e, t) {
           if (!this || Object.getPrototypeOf(this) !== b) {
             throw new TypeError("Value of `this` is not a HeadersIterator");
           }
-          var e = this[y];
+          var e = this[f];
           const t = e.target,
             r = e.kind,
             n = e.index;
@@ -5032,7 +3255,7 @@ module.exports = (function(e, t) {
           if (n >= s) {
             return { value: undefined, done: true };
           }
-          this[y].index = n + 1;
+          this[f].index = n + 1;
           return { value: i[n], done: false };
         }
       },
@@ -5045,8 +3268,8 @@ module.exports = (function(e, t) {
       configurable: true
     });
     function exportNodeCompatibleHeaders(e) {
-      const t = Object.assign({ __proto__: null }, e[f]);
-      const r = find(e[f], "Host");
+      const t = Object.assign({ __proto__: null }, e[y]);
+      const r = find(e[y], "Host");
       if (r !== undefined) {
         t[r] = t[r][0];
       }
@@ -5063,20 +3286,20 @@ module.exports = (function(e, t) {
             if (h.test(n)) {
               continue;
             }
-            if (t[f][r] === undefined) {
-              t[f][r] = [n];
+            if (t[y][r] === undefined) {
+              t[y][r] = [n];
             } else {
-              t[f][r].push(n);
+              t[y][r].push(n);
             }
           }
         } else if (!h.test(e[r])) {
-          t[f][r] = [e[r]];
+          t[y][r] = [e[r]];
         }
       }
       return t;
     }
     const _ = Symbol("Response internals");
-    const w = i.STATUS_CODES;
+    const q = i.STATUS_CODES;
     class Response {
       constructor() {
         let e =
@@ -5099,7 +3322,7 @@ module.exports = (function(e, t) {
         this[_] = {
           url: t.url,
           status: r,
-          statusText: t.statusText || w[r],
+          statusText: t.statusText || q[r],
           headers: n,
           counter: t.counter
         };
@@ -5149,12 +3372,12 @@ module.exports = (function(e, t) {
       enumerable: false,
       configurable: true
     });
-    const q = Symbol("Request internals");
+    const w = Symbol("Request internals");
     const v = s.parse;
-    const E = s.format;
-    const T = "destroy" in n.Readable.prototype;
+    const T = s.format;
+    const E = "destroy" in n.Readable.prototype;
     function isRequest(e) {
-      return typeof e === "object" && typeof e[q] === "object";
+      return typeof e === "object" && typeof e[w] === "object";
     }
     function isAbortSignal(e) {
       const t = e && typeof e === "object" && Object.getPrototypeOf(e);
@@ -5209,7 +3432,7 @@ module.exports = (function(e, t) {
             "Expected signal to be an instanceof AbortSignal"
           );
         }
-        this[q] = {
+        this[w] = {
           method: n,
           redirect: t.redirect || e.redirect || "follow",
           headers: s,
@@ -5232,19 +3455,19 @@ module.exports = (function(e, t) {
         this.agent = t.agent || e.agent;
       }
       get method() {
-        return this[q].method;
+        return this[w].method;
       }
       get url() {
-        return E(this[q].parsedURL);
+        return T(this[w].parsedURL);
       }
       get headers() {
-        return this[q].headers;
+        return this[w].headers;
       }
       get redirect() {
-        return this[q].redirect;
+        return this[w].redirect;
       }
       get signal() {
-        return this[q].signal;
+        return this[w].signal;
       }
       clone() {
         return new Request(this);
@@ -5266,8 +3489,8 @@ module.exports = (function(e, t) {
       signal: { enumerable: true }
     });
     function getNodeRequestOptions(e) {
-      const t = e[q].parsedURL;
-      const r = new Headers(e[q].headers);
+      const t = e[w].parsedURL;
+      const r = new Headers(e[w].headers);
       if (!r.has("Accept")) {
         r.set("Accept", "*/*");
       }
@@ -5277,7 +3500,7 @@ module.exports = (function(e, t) {
       if (!/^https?:$/.test(t.protocol)) {
         throw new TypeError("Only HTTP(S) protocols are supported");
       }
-      if (e.signal && e.body instanceof n.Readable && !T) {
+      if (e.signal && e.body instanceof n.Readable && !E) {
         throw new Error(
           "Cancellation of streamed requests with AbortSignal is not supported in node < 8"
         );
@@ -5340,37 +3563,37 @@ module.exports = (function(e, t) {
         const p = getNodeRequestOptions(u);
         const c = (p.protocol === "https:" ? o : i).request;
         const d = u.signal;
-        let l = null;
-        const g = function abort() {
+        let g = null;
+        const l = function abort() {
           let e = new AbortError("The user aborted a request.");
           s(e);
           if (u.body && u.body instanceof n.Readable) {
             u.body.destroy(e);
           }
-          if (!l || !l.body) return;
-          l.body.emit("error", e);
+          if (!g || !g.body) return;
+          g.body.emit("error", e);
         };
         if (d && d.aborted) {
-          g();
+          l();
           return;
         }
         const m = function abortAndFinalize() {
-          g();
+          l();
           finalize();
         };
         const h = c(p);
-        let f;
+        let y;
         if (d) {
           d.addEventListener("abort", m);
         }
         function finalize() {
           h.abort();
           if (d) d.removeEventListener("abort", m);
-          clearTimeout(f);
+          clearTimeout(y);
         }
         if (u.timeout) {
           h.once("socket", function(e) {
-            f = setTimeout(function() {
+            y = setTimeout(function() {
               s(
                 new FetchError(
                   `network timeout at: ${u.url}`,
@@ -5392,7 +3615,7 @@ module.exports = (function(e, t) {
           finalize();
         });
         h.on("response", function(e) {
-          clearTimeout(f);
+          clearTimeout(y);
           const t = createHeadersLenient(e.headers);
           if (fetch.isRedirect(e.statusCode)) {
             const n = t.get("Location");
@@ -5491,15 +3714,15 @@ module.exports = (function(e, t) {
             e.statusCode === 204 ||
             e.statusCode === 304
           ) {
-            l = new Response(n, i);
-            r(l);
+            g = new Response(n, i);
+            r(g);
             return;
           }
           const p = { flush: a.Z_SYNC_FLUSH, finishFlush: a.Z_SYNC_FLUSH };
           if (o == "gzip" || o == "x-gzip") {
             n = n.pipe(a.createGunzip(p));
-            l = new Response(n, i);
-            r(l);
+            g = new Response(n, i);
+            r(g);
             return;
           }
           if (o == "deflate" || o == "x-deflate") {
@@ -5510,19 +3733,19 @@ module.exports = (function(e, t) {
               } else {
                 n = n.pipe(a.createInflateRaw());
               }
-              l = new Response(n, i);
-              r(l);
+              g = new Response(n, i);
+              r(g);
             });
             return;
           }
           if (o == "br" && typeof a.createBrotliDecompress === "function") {
             n = n.pipe(a.createBrotliDecompress());
-            l = new Response(n, i);
-            r(l);
+            g = new Response(n, i);
+            r(g);
             return;
           }
-          l = new Response(n, i);
-          r(l);
+          g = new Response(n, i);
+          r(g);
         });
         writeToStream(h, u);
       });
@@ -5539,27 +3762,6 @@ module.exports = (function(e, t) {
     t.Response = Response;
     t.FetchError = FetchError;
   },
-  462: function(e) {
-    "use strict";
-    const t = /([()\][%!^"`<>&|;, *?])/g;
-    function escapeCommand(e) {
-      e = e.replace(t, "^$1");
-      return e;
-    }
-    function escapeArgument(e, r) {
-      e = `${e}`;
-      e = e.replace(/(\\*)"/g, '$1$1\\"');
-      e = e.replace(/(\\*)$/, "$1$1");
-      e = `"${e}"`;
-      e = e.replace(t, "^$1");
-      if (r) {
-        e = e.replace(t, "^$1");
-      }
-      return e;
-    }
-    e.exports.command = escapeCommand;
-    e.exports.argument = escapeArgument;
-  },
   463: function(e, t, r) {
     "use strict";
     Object.defineProperty(t, "__esModule", { value: true });
@@ -5567,7 +3769,7 @@ module.exports = (function(e, t) {
       return e && typeof e === "object" && "default" in e ? e["default"] : e;
     }
     var n = r(692);
-    var i = _interopDefault(r(969));
+    var i = _interopDefault(r(49));
     const s = i(e => console.warn(e));
     class RequestError extends Error {
       constructor(e, t, r) {
@@ -5642,38 +3844,23 @@ module.exports = (function(e, t) {
       t.url += `client_id=${r}&client_secret=${s}`;
     }
   },
-  489: function(e, t, r) {
-    "use strict";
-    const n = r(622);
-    const i = r(814);
-    const s = r(39)();
-    function resolveCommandAttempt(e, t) {
-      const r = process.cwd();
-      const o = e.options.cwd != null;
-      if (o) {
-        try {
-          process.chdir(e.options.cwd);
-        } catch (e) {}
+  489: function(e) {
+    e.exports = validateAuth;
+    function validateAuth(e) {
+      if (typeof e === "string") {
+        return;
       }
-      let a;
-      try {
-        a = i.sync(e.command, {
-          path: (e.options.env || process.env)[s],
-          pathExt: t ? n.delimiter : undefined
-        });
-      } catch (e) {
-      } finally {
-        process.chdir(r);
+      if (typeof e === "function") {
+        return;
       }
-      if (a) {
-        a = n.resolve(o ? e.options.cwd : "", a);
+      if (e.username && e.password) {
+        return;
       }
-      return a;
+      if (e.clientId && e.clientSecret) {
+        return;
+      }
+      throw new Error(`Invalid "auth" option: ${JSON.stringify(e)}`);
     }
-    function resolveCommand(e) {
-      return resolveCommandAttempt(e) || resolveCommandAttempt(e, true);
-    }
-    e.exports = resolveCommand;
   },
   510: function(e) {
     e.exports = addHook;
@@ -5716,9 +3903,9 @@ module.exports = (function(e, t) {
     }
   },
   523: function(e, t, r) {
-    var n = r(363);
+    var n = r(280);
     var i = r(510);
-    var s = r(763);
+    var s = r(866);
     var o = Function.bind;
     var a = o.bind(o);
     function bindApi(e, t, r) {
@@ -6135,91 +4322,6 @@ module.exports = (function(e, t) {
       }
     };
   },
-  568: function(e, t, r) {
-    "use strict";
-    const n = r(622);
-    const i = r(948);
-    const s = r(489);
-    const o = r(462);
-    const a = r(389);
-    const u = r(280);
-    const p = process.platform === "win32";
-    const c = /\.(?:com|exe)$/i;
-    const d = /node_modules[\\/].bin[\\/][^\\/]+\.cmd$/i;
-    const l =
-      i(() =>
-        u.satisfies(process.version, "^4.8.0 || ^5.7.0 || >= 6.0.0", true)
-      ) || false;
-    function detectShebang(e) {
-      e.file = s(e);
-      const t = e.file && a(e.file);
-      if (t) {
-        e.args.unshift(e.file);
-        e.command = t;
-        return s(e);
-      }
-      return e.file;
-    }
-    function parseNonShell(e) {
-      if (!p) {
-        return e;
-      }
-      const t = detectShebang(e);
-      const r = !c.test(t);
-      if (e.options.forceShell || r) {
-        const r = d.test(t);
-        e.command = n.normalize(e.command);
-        e.command = o.command(e.command);
-        e.args = e.args.map(e => o.argument(e, r));
-        const i = [e.command].concat(e.args).join(" ");
-        e.args = ["/d", "/s", "/c", `"${i}"`];
-        e.command = process.env.comspec || "cmd.exe";
-        e.options.windowsVerbatimArguments = true;
-      }
-      return e;
-    }
-    function parseShell(e) {
-      if (l) {
-        return e;
-      }
-      const t = [e.command].concat(e.args).join(" ");
-      if (p) {
-        e.command =
-          typeof e.options.shell === "string"
-            ? e.options.shell
-            : process.env.comspec || "cmd.exe";
-        e.args = ["/d", "/s", "/c", `"${t}"`];
-        e.options.windowsVerbatimArguments = true;
-      } else {
-        if (typeof e.options.shell === "string") {
-          e.command = e.options.shell;
-        } else if (process.platform === "android") {
-          e.command = "/system/bin/sh";
-        } else {
-          e.command = "/bin/sh";
-        }
-        e.args = ["-c", t];
-      }
-      return e;
-    }
-    function parse(e, t, r) {
-      if (t && !Array.isArray(t)) {
-        r = t;
-        t = null;
-      }
-      t = t ? t.slice(0) : [];
-      r = Object.assign({}, r);
-      const n = {
-        command: e,
-        args: t,
-        options: r,
-        file: undefined,
-        original: { command: e, args: t }
-      };
-      return r.shell ? parseShell(n) : parseNonShell(n);
-    }
-    e.exports = parse;
-  },
   577: function(e) {
     e.exports = getPageLinks;
     function getPageLinks(e) {
@@ -6259,35 +4361,6 @@ module.exports = (function(e, t) {
   },
   605: function(e) {
     e.exports = require("http");
-  },
-  614: function(e) {
-    e.exports = require("events");
-  },
-  621: function(e, t, r) {
-    "use strict";
-    const n = r(622);
-    const i = r(39);
-    e.exports = e => {
-      e = Object.assign({ cwd: process.cwd(), path: process.env[i()] }, e);
-      let t;
-      let r = n.resolve(e.cwd);
-      const s = [];
-      while (t !== r) {
-        s.push(n.join(r, "node_modules/.bin"));
-        t = r;
-        r = n.resolve(r, "..");
-      }
-      s.push(n.dirname(process.execPath));
-      return s.concat(e.path).join(n.delimiter);
-    };
-    e.exports.env = t => {
-      t = Object.assign({ env: process.env }, t);
-      const r = Object.assign({}, t.env);
-      const n = i({ env: r });
-      t.path = r[n];
-      r[n] = e.exports(t);
-      return r;
-    };
   },
   622: function(e) {
     e.exports = require("path");
@@ -6474,7 +4547,7 @@ module.exports = (function(e, t) {
         _defineProperty(s, o.LAST_YEAR, "last_year"),
         s)
       ),
-      l = (function() {
+      g = (function() {
         function e(t) {
           _classCallCheck(this, e),
             (this.apiKey = t),
@@ -6801,25 +4874,7 @@ module.exports = (function(e, t) {
           e
         );
       })();
-    (r.RANGE = o), (r.WakaTimeClient = l);
-  },
-  654: function(e) {
-    e.exports = ["SIGABRT", "SIGALRM", "SIGHUP", "SIGINT", "SIGTERM"];
-    if (process.platform !== "win32") {
-      e.exports.push(
-        "SIGVTALRM",
-        "SIGXCPU",
-        "SIGXFSZ",
-        "SIGUSR2",
-        "SIGTRAP",
-        "SIGSYS",
-        "SIGQUIT",
-        "SIGIOT"
-      );
-    }
-    if (process.platform === "linux") {
-      e.exports.push("SIGIO", "SIGPOLL", "SIGPWR", "SIGSTKFLT", "SIGUNUSED");
-    }
+    (r.RANGE = o), (r.WakaTimeClient = g);
   },
   669: function(e) {
     e.exports = require("util");
@@ -6835,25 +4890,25 @@ module.exports = (function(e, t) {
     var p = r(549).https;
     var c = r(835);
     var d = r(903);
-    var l = r(361);
-    var g = r(26);
+    var g = r(361);
+    var l = r(26);
     var m = r(369);
     var h = /https:?/;
     e.exports = function httpAdapter(e) {
       return new Promise(function dispatchHttpRequest(t, r) {
-        var f;
-        var y = function resolve(e) {
-          clearTimeout(f);
+        var y;
+        var f = function resolve(e) {
+          clearTimeout(y);
           t(e);
         };
         var b = function reject(e) {
-          clearTimeout(f);
+          clearTimeout(y);
           r(e);
         };
         var _ = e.data;
-        var w = e.headers;
-        if (!w["User-Agent"] && !w["user-agent"]) {
-          w["User-Agent"] = "axios/" + l.version;
+        var q = e.headers;
+        if (!q["User-Agent"] && !q["user-agent"]) {
+          q["User-Agent"] = "axios/" + g.version;
         }
         if (_ && !n.isStream(_)) {
           if (Buffer.isBuffer(_)) {
@@ -6863,59 +4918,59 @@ module.exports = (function(e, t) {
             _ = Buffer.from(_, "utf-8");
           } else {
             return b(
-              g(
+              l(
                 "Data after transformation must be a string, an ArrayBuffer, a Buffer, or a Stream",
                 e
               )
             );
           }
-          w["Content-Length"] = _.length;
+          q["Content-Length"] = _.length;
         }
-        var q = undefined;
+        var w = undefined;
         if (e.auth) {
           var v = e.auth.username || "";
-          var E = e.auth.password || "";
-          q = v + ":" + E;
+          var T = e.auth.password || "";
+          w = v + ":" + T;
         }
-        var T = c.parse(e.url);
-        var C = T.protocol || "http:";
-        if (!q && T.auth) {
-          var j = T.auth.split(":");
-          var S = j[0] || "";
-          var x = j[1] || "";
-          q = S + ":" + x;
+        var E = c.parse(e.url);
+        var C = E.protocol || "http:";
+        if (!w && E.auth) {
+          var j = E.auth.split(":");
+          var k = j[0] || "";
+          var P = j[1] || "";
+          w = k + ":" + P;
         }
-        if (q) {
-          delete w.Authorization;
+        if (w) {
+          delete q.Authorization;
         }
-        var k = h.test(C);
-        var O = k ? e.httpsAgent : e.httpAgent;
-        var P = {
-          path: s(T.path, e.params, e.paramsSerializer).replace(/^\?/, ""),
+        var O = h.test(C);
+        var S = O ? e.httpsAgent : e.httpAgent;
+        var A = {
+          path: s(E.path, e.params, e.paramsSerializer).replace(/^\?/, ""),
           method: e.method.toUpperCase(),
-          headers: w,
-          agent: O,
-          auth: q
+          headers: q,
+          agent: S,
+          auth: w
         };
         if (e.socketPath) {
-          P.socketPath = e.socketPath;
+          A.socketPath = e.socketPath;
         } else {
-          P.hostname = T.hostname;
-          P.port = T.port;
+          A.hostname = E.hostname;
+          A.port = E.port;
         }
-        var A = e.proxy;
-        if (!A && A !== false) {
+        var x = e.proxy;
+        if (!x && x !== false) {
           var R = C.slice(0, -1) + "_proxy";
           var G = process.env[R] || process.env[R.toUpperCase()];
           if (G) {
             var F = c.parse(G);
-            var B = process.env.no_proxy || process.env.NO_PROXY;
-            var D = true;
-            if (B) {
-              var L = B.split(",").map(function trim(e) {
+            var D = process.env.no_proxy || process.env.NO_PROXY;
+            var B = true;
+            if (D) {
+              var L = D.split(",").map(function trim(e) {
                 return e.trim();
               });
-              D = !L.some(function proxyMatch(e) {
+              B = !L.some(function proxyMatch(e) {
                 if (!e) {
                   return false;
                 }
@@ -6924,55 +4979,55 @@ module.exports = (function(e, t) {
                 }
                 if (
                   e[0] === "." &&
-                  T.hostname.substr(T.hostname.length - e.length) === e &&
-                  e.match(/\./g).length === T.hostname.match(/\./g).length
+                  E.hostname.substr(E.hostname.length - e.length) === e &&
+                  e.match(/\./g).length === E.hostname.match(/\./g).length
                 ) {
                   return true;
                 }
-                return T.hostname === e;
+                return E.hostname === e;
               });
             }
-            if (D) {
-              A = { host: F.hostname, port: F.port };
+            if (B) {
+              x = { host: F.hostname, port: F.port };
               if (F.auth) {
                 var U = F.auth.split(":");
-                A.auth = { username: U[0], password: U[1] };
+                x.auth = { username: U[0], password: U[1] };
               }
             }
           }
         }
-        if (A) {
-          P.hostname = A.host;
-          P.host = A.host;
-          P.headers.host = T.hostname + (T.port ? ":" + T.port : "");
-          P.port = A.port;
-          P.path =
-            C + "//" + T.hostname + (T.port ? ":" + T.port : "") + P.path;
-          if (A.auth) {
-            var I = Buffer.from(
-              A.auth.username + ":" + A.auth.password,
+        if (x) {
+          A.hostname = x.host;
+          A.host = x.host;
+          A.headers.host = E.hostname + (E.port ? ":" + E.port : "");
+          A.port = x.port;
+          A.path =
+            C + "//" + E.hostname + (E.port ? ":" + E.port : "") + A.path;
+          if (x.auth) {
+            var H = Buffer.from(
+              x.auth.username + ":" + x.auth.password,
               "utf8"
             ).toString("base64");
-            P.headers["Proxy-Authorization"] = "Basic " + I;
+            A.headers["Proxy-Authorization"] = "Basic " + H;
           }
         }
-        var $;
-        var H = k && (A ? h.test(A.protocol) : true);
+        var z;
+        var I = O && (x ? h.test(x.protocol) : true);
         if (e.transport) {
-          $ = e.transport;
+          z = e.transport;
         } else if (e.maxRedirects === 0) {
-          $ = H ? a : o;
+          z = I ? a : o;
         } else {
           if (e.maxRedirects) {
-            P.maxRedirects = e.maxRedirects;
+            A.maxRedirects = e.maxRedirects;
           }
-          $ = H ? p : u;
+          z = I ? p : u;
         }
         if (e.maxContentLength && e.maxContentLength > -1) {
-          P.maxBodyLength = e.maxContentLength;
+          A.maxBodyLength = e.maxContentLength;
         }
-        var z = $.request(P, function handleResponse(t) {
-          if (z.aborted) return;
+        var M = z.request(A, function handleResponse(t) {
+          if (M.aborted) return;
           var r = t;
           switch (t.headers["content-encoding"]) {
             case "gzip":
@@ -6982,7 +5037,7 @@ module.exports = (function(e, t) {
               delete t.headers["content-encoding"];
               break;
           }
-          var n = t.req || z;
+          var n = t.req || M;
           var s = {
             status: t.statusCode,
             statusText: t.statusMessage,
@@ -6992,7 +5047,7 @@ module.exports = (function(e, t) {
           };
           if (e.responseType === "stream") {
             s.data = r;
-            i(y, b, s);
+            i(f, b, s);
           } else {
             var o = [];
             r.on("data", function handleStreamData(t) {
@@ -7003,7 +5058,7 @@ module.exports = (function(e, t) {
               ) {
                 r.destroy();
                 b(
-                  g(
+                  l(
                     "maxContentLength size of " +
                       e.maxContentLength +
                       " exceeded",
@@ -7015,7 +5070,7 @@ module.exports = (function(e, t) {
               }
             });
             r.on("error", function handleStreamError(t) {
-              if (z.aborted) return;
+              if (M.aborted) return;
               b(m(t, e, null, n));
             });
             r.on("end", function handleStreamEnd() {
@@ -7024,35 +5079,35 @@ module.exports = (function(e, t) {
                 t = t.toString(e.responseEncoding);
               }
               s.data = t;
-              i(y, b, s);
+              i(f, b, s);
             });
           }
         });
-        z.on("error", function handleRequestError(t) {
-          if (z.aborted) return;
-          b(m(t, e, null, z));
+        M.on("error", function handleRequestError(t) {
+          if (M.aborted) return;
+          b(m(t, e, null, M));
         });
         if (e.timeout) {
-          f = setTimeout(function handleRequestTimeout() {
-            z.abort();
+          y = setTimeout(function handleRequestTimeout() {
+            M.abort();
             b(
-              g("timeout of " + e.timeout + "ms exceeded", e, "ECONNABORTED", z)
+              l("timeout of " + e.timeout + "ms exceeded", e, "ECONNABORTED", M)
             );
           }, e.timeout);
         }
         if (e.cancelToken) {
           e.cancelToken.promise.then(function onCanceled(e) {
-            if (z.aborted) return;
-            z.abort();
+            if (M.aborted) return;
+            M.abort();
             b(e);
           });
         }
         if (n.isStream(_)) {
           _.on("error", function handleStreamError(t) {
-            b(m(t, e, null, z));
-          }).pipe(z);
+            b(m(t, e, null, M));
+          }).pipe(M);
         } else {
-          z.end(_);
+          M.end(_);
         }
       });
     };
@@ -7060,7 +5115,7 @@ module.exports = (function(e, t) {
   674: function(e, t, r) {
     e.exports = authenticate;
     const { Deprecation: n } = r(692);
-    const i = r(969);
+    const i = r(49);
     const s = i((e, t) => e.warn(t));
     function authenticate(e, t) {
       s(
@@ -7159,49 +5214,6 @@ module.exports = (function(e, t) {
       }
     }
     t.Deprecation = Deprecation;
-  },
-  696: function(e) {
-    "use strict";
-    function isObject(e) {
-      return e != null && typeof e === "object" && Array.isArray(e) === false;
-    }
-    function isObjectObject(e) {
-      return (
-        isObject(e) === true &&
-        Object.prototype.toString.call(e) === "[object Object]"
-      );
-    }
-    function isPlainObject(e) {
-      var t, r;
-      if (isObjectObject(e) === false) return false;
-      t = e.constructor;
-      if (typeof t !== "function") return false;
-      r = t.prototype;
-      if (isObjectObject(r) === false) return false;
-      if (r.hasOwnProperty("isPrototypeOf") === false) {
-        return false;
-      }
-      return true;
-    }
-    e.exports = isPlainObject;
-  },
-  697: function(e) {
-    "use strict";
-    e.exports = (e, t) => {
-      t = t || (() => {});
-      return e.then(
-        e =>
-          new Promise(e => {
-            e(t());
-          }).then(() => e),
-        e =>
-          new Promise(e => {
-            e(t());
-          }).then(() => {
-            throw e;
-          })
-      );
-    };
   },
   705: function(e) {
     e.exports = {
@@ -13072,57 +11084,6 @@ module.exports = (function(e, t) {
       return !!(e && e.__CANCEL__);
     };
   },
-  742: function(e, t, r) {
-    var n = r(747);
-    var i;
-    if (process.platform === "win32" || global.TESTING_WINDOWS) {
-      i = r(818);
-    } else {
-      i = r(197);
-    }
-    e.exports = isexe;
-    isexe.sync = sync;
-    function isexe(e, t, r) {
-      if (typeof t === "function") {
-        r = t;
-        t = {};
-      }
-      if (!r) {
-        if (typeof Promise !== "function") {
-          throw new TypeError("callback not provided");
-        }
-        return new Promise(function(r, n) {
-          isexe(e, t || {}, function(e, t) {
-            if (e) {
-              n(e);
-            } else {
-              r(t);
-            }
-          });
-        });
-      }
-      i(e, t || {}, function(e, n) {
-        if (e) {
-          if (e.code === "EACCES" || (t && t.ignoreErrors)) {
-            e = null;
-            n = false;
-          }
-        }
-        r(e, n);
-      });
-    }
-    function sync(e, t) {
-      try {
-        return i.sync(e, t || {});
-      } catch (e) {
-        if ((t && t.ignoreErrors) || e.code === "EACCES") {
-          return false;
-        } else {
-          throw e;
-        }
-      }
-    }
-  },
   747: function(e) {
     e.exports = require("fs");
   },
@@ -13134,15 +11095,15 @@ module.exports = (function(e, t) {
     }
     var n = r(385);
     var i = r(796);
-    var s = _interopDefault(r(696));
+    var s = r(356);
     var o = _interopDefault(r(454));
     var a = r(463);
-    const u = "5.3.1";
+    const u = "5.4.14";
     function getBufferResponse(e) {
       return e.arrayBuffer();
     }
     function fetchWrapper(e) {
-      if (s(e.body) || Array.isArray(e.body)) {
+      if (s.isPlainObject(e.body) || Array.isArray(e.body)) {
         e.body = JSON.stringify(e.body);
       }
       let t = {};
@@ -13343,37 +11304,6 @@ module.exports = (function(e, t) {
       }
       return Math.ceil(e / t) + " " + r + "s";
     }
-  },
-  763: function(e) {
-    e.exports = removeHook;
-    function removeHook(e, t, r) {
-      if (!e.registry[t]) {
-        return;
-      }
-      var n = e.registry[t]
-        .map(function(e) {
-          return e.orig;
-        })
-        .indexOf(r);
-      if (n === -1) {
-        return;
-      }
-      e.registry[t].splice(n, 1);
-    }
-  },
-  768: function(e) {
-    "use strict";
-    e.exports = function(e) {
-      var t = typeof e === "string" ? "\n" : "\n".charCodeAt();
-      var r = typeof e === "string" ? "\r" : "\r".charCodeAt();
-      if (e[e.length - 1] === t) {
-        e = e.slice(0, e.length - 1);
-      }
-      if (e[e.length - 1] === r) {
-        e = e.slice(0, e.length - 1);
-      }
-      return e;
-    };
   },
   777: function(e, t, r) {
     e.exports = getFirstPage;
@@ -13627,22 +11557,19 @@ module.exports = (function(e, t) {
       } catch (e) {}
     }
   },
-  796: function(e, t, r) {
+  796: function(e, t) {
     "use strict";
     Object.defineProperty(t, "__esModule", { value: true });
-    function _interopDefault(e) {
-      return e && typeof e === "object" && "default" in e ? e["default"] : e;
-    }
-    var n = _interopDefault(r(2));
     function getUserAgent() {
-      try {
-        return `Node.js/${process.version.substr(1)} (${n()}; ${process.arch})`;
-      } catch (e) {
-        if (/wmic os get Caption/.test(e.message)) {
-          return "Windows <version undetectable>";
-        }
-        throw e;
+      if (typeof navigator === "object" && "userAgent" in navigator) {
+        return navigator.userAgent;
       }
+      if (typeof process === "object" && "version" in process) {
+        return `Node.js/${process.version.substr(1)} (${process.platform}; ${
+          process.arch
+        })`;
+      }
+      return "<environment undetectable>";
     }
     t.getUserAgent = getUserAgent;
   },
@@ -13683,141 +11610,6 @@ module.exports = (function(e, t) {
         e.constructor.isBuffer(e)
       );
     };
-  },
-  814: function(e, t, r) {
-    e.exports = which;
-    which.sync = whichSync;
-    var n =
-      process.platform === "win32" ||
-      process.env.OSTYPE === "cygwin" ||
-      process.env.OSTYPE === "msys";
-    var i = r(622);
-    var s = n ? ";" : ":";
-    var o = r(742);
-    function getNotFoundError(e) {
-      var t = new Error("not found: " + e);
-      t.code = "ENOENT";
-      return t;
-    }
-    function getPathInfo(e, t) {
-      var r = t.colon || s;
-      var i = t.path || process.env.PATH || "";
-      var o = [""];
-      i = i.split(r);
-      var a = "";
-      if (n) {
-        i.unshift(process.cwd());
-        a = t.pathExt || process.env.PATHEXT || ".EXE;.CMD;.BAT;.COM";
-        o = a.split(r);
-        if (e.indexOf(".") !== -1 && o[0] !== "") o.unshift("");
-      }
-      if (e.match(/\//) || (n && e.match(/\\/))) i = [""];
-      return { env: i, ext: o, extExe: a };
-    }
-    function which(e, t, r) {
-      if (typeof t === "function") {
-        r = t;
-        t = {};
-      }
-      var n = getPathInfo(e, t);
-      var s = n.env;
-      var a = n.ext;
-      var u = n.extExe;
-      var p = [];
-      (function F(n, c) {
-        if (n === c) {
-          if (t.all && p.length) return r(null, p);
-          else return r(getNotFoundError(e));
-        }
-        var d = s[n];
-        if (d.charAt(0) === '"' && d.slice(-1) === '"') d = d.slice(1, -1);
-        var l = i.join(d, e);
-        if (!d && /^\.[\\\/]/.test(e)) {
-          l = e.slice(0, 2) + l;
-        }
-        (function E(e, i) {
-          if (e === i) return F(n + 1, c);
-          var s = a[e];
-          o(l + s, { pathExt: u }, function(n, o) {
-            if (!n && o) {
-              if (t.all) p.push(l + s);
-              else return r(null, l + s);
-            }
-            return E(e + 1, i);
-          });
-        })(0, a.length);
-      })(0, s.length);
-    }
-    function whichSync(e, t) {
-      t = t || {};
-      var r = getPathInfo(e, t);
-      var n = r.env;
-      var s = r.ext;
-      var a = r.extExe;
-      var u = [];
-      for (var p = 0, c = n.length; p < c; p++) {
-        var d = n[p];
-        if (d.charAt(0) === '"' && d.slice(-1) === '"') d = d.slice(1, -1);
-        var l = i.join(d, e);
-        if (!d && /^\.[\\\/]/.test(e)) {
-          l = e.slice(0, 2) + l;
-        }
-        for (var g = 0, m = s.length; g < m; g++) {
-          var h = l + s[g];
-          var f;
-          try {
-            f = o.sync(h, { pathExt: a });
-            if (f) {
-              if (t.all) u.push(h);
-              else return h;
-            }
-          } catch (e) {}
-        }
-      }
-      if (t.all && u.length) return u;
-      if (t.nothrow) return null;
-      throw getNotFoundError(e);
-    }
-  },
-  816: function(e) {
-    "use strict";
-    e.exports = /^#!.*/;
-  },
-  818: function(e, t, r) {
-    e.exports = isexe;
-    isexe.sync = sync;
-    var n = r(747);
-    function checkPathExt(e, t) {
-      var r = t.pathExt !== undefined ? t.pathExt : process.env.PATHEXT;
-      if (!r) {
-        return true;
-      }
-      r = r.split(";");
-      if (r.indexOf("") !== -1) {
-        return true;
-      }
-      for (var n = 0; n < r.length; n++) {
-        var i = r[n].toLowerCase();
-        if (i && e.substr(-i.length).toLowerCase() === i) {
-          return true;
-        }
-      }
-      return false;
-    }
-    function checkStat(e, t, r) {
-      if (!e.isSymbolicLink() && !e.isFile()) {
-        return false;
-      }
-      return checkPathExt(t, r);
-    }
-    function isexe(e, t, r) {
-      n.stat(e, function(n, i) {
-        r(n, n ? false : checkStat(i, e, t));
-      });
-    }
-    function sync(e, t) {
-      return checkStat(n.statSync(e), e, t);
-    }
   },
   825: function(e, t, r) {
     "use strict";
@@ -13915,12 +11707,12 @@ module.exports = (function(e, t) {
       p = /^\./,
       c = /[^.[\]]+|\[(?:(-?\d+(?:\.\d+)?)|(["'])((?:(?!\2)[^\\]|\\.)*?)\2)\]|(?=(?:\.|\[\])(?:\.|\[\]|$))/g;
     var d = /[\\^$.*+?()[\]{}|]/g;
-    var l = /\\(\\)?/g;
-    var g = /^\[object .+?Constructor\]$/;
+    var g = /\\(\\)?/g;
+    var l = /^\[object .+?Constructor\]$/;
     var m =
       typeof global == "object" && global && global.Object === Object && global;
     var h = typeof self == "object" && self && self.Object === Object && self;
-    var f = m || h || Function("return this")();
+    var y = m || h || Function("return this")();
     function getValue(e, t) {
       return e == null ? undefined : e[t];
     }
@@ -13933,21 +11725,21 @@ module.exports = (function(e, t) {
       }
       return t;
     }
-    var y = Array.prototype,
+    var f = Array.prototype,
       b = Function.prototype,
       _ = Object.prototype;
-    var w = f["__core-js_shared__"];
-    var q = (function() {
-      var e = /[^.]+$/.exec((w && w.keys && w.keys.IE_PROTO) || "");
+    var q = y["__core-js_shared__"];
+    var w = (function() {
+      var e = /[^.]+$/.exec((q && q.keys && q.keys.IE_PROTO) || "");
       return e ? "Symbol(src)_1." + e : "";
     })();
     var v = b.toString;
-    var E = _.hasOwnProperty;
-    var T = _.toString;
+    var T = _.hasOwnProperty;
+    var E = _.toString;
     var C = RegExp(
       "^" +
         v
-          .call(E)
+          .call(T)
           .replace(d, "\\$&")
           .replace(
             /hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g,
@@ -13955,12 +11747,12 @@ module.exports = (function(e, t) {
           ) +
         "$"
     );
-    var j = f.Symbol,
-      S = y.splice;
-    var x = getNative(f, "Map"),
-      k = getNative(Object, "create");
-    var O = j ? j.prototype : undefined,
-      P = O ? O.toString : undefined;
+    var j = y.Symbol,
+      k = f.splice;
+    var P = getNative(y, "Map"),
+      O = getNative(Object, "create");
+    var S = j ? j.prototype : undefined,
+      A = S ? S.toString : undefined;
     function Hash(e) {
       var t = -1,
         r = e ? e.length : 0;
@@ -13971,26 +11763,26 @@ module.exports = (function(e, t) {
       }
     }
     function hashClear() {
-      this.__data__ = k ? k(null) : {};
+      this.__data__ = O ? O(null) : {};
     }
     function hashDelete(e) {
       return this.has(e) && delete this.__data__[e];
     }
     function hashGet(e) {
       var t = this.__data__;
-      if (k) {
+      if (O) {
         var n = t[e];
         return n === r ? undefined : n;
       }
-      return E.call(t, e) ? t[e] : undefined;
+      return T.call(t, e) ? t[e] : undefined;
     }
     function hashHas(e) {
       var t = this.__data__;
-      return k ? t[e] !== undefined : E.call(t, e);
+      return O ? t[e] !== undefined : T.call(t, e);
     }
     function hashSet(e, t) {
       var n = this.__data__;
-      n[e] = k && t === undefined ? r : t;
+      n[e] = O && t === undefined ? r : t;
       return this;
     }
     Hash.prototype.clear = hashClear;
@@ -14020,7 +11812,7 @@ module.exports = (function(e, t) {
       if (r == n) {
         t.pop();
       } else {
-        S.call(t, r, 1);
+        k.call(t, r, 1);
       }
       return true;
     }
@@ -14059,7 +11851,7 @@ module.exports = (function(e, t) {
     function mapCacheClear() {
       this.__data__ = {
         hash: new Hash(),
-        map: new (x || ListCache)(),
+        map: new (P || ListCache)(),
         string: new Hash()
       };
     }
@@ -14103,7 +11895,7 @@ module.exports = (function(e, t) {
       if (!isObject(e) || isMasked(e)) {
         return false;
       }
-      var t = isFunction(e) || isHostObject(e) ? C : g;
+      var t = isFunction(e) || isHostObject(e) ? C : l;
       return t.test(toSource(e));
     }
     function baseToString(e) {
@@ -14111,13 +11903,13 @@ module.exports = (function(e, t) {
         return e;
       }
       if (isSymbol(e)) {
-        return P ? P.call(e) : "";
+        return A ? A.call(e) : "";
       }
       var t = e + "";
       return t == "0" && 1 / e == -n ? "-0" : t;
     }
     function castPath(e) {
-      return R(e) ? e : A(e);
+      return R(e) ? e : x(e);
     }
     function getMapData(e, t) {
       var r = e.__data__;
@@ -14150,16 +11942,16 @@ module.exports = (function(e, t) {
         : e === null;
     }
     function isMasked(e) {
-      return !!q && q in e;
+      return !!w && w in e;
     }
-    var A = memoize(function(e) {
+    var x = memoize(function(e) {
       e = toString(e);
       var t = [];
       if (p.test(e)) {
         t.push("");
       }
       e.replace(c, function(e, r, n, i) {
-        t.push(n ? i.replace(l, "$1") : r || e);
+        t.push(n ? i.replace(g, "$1") : r || e);
       });
       return t;
     });
@@ -14205,7 +11997,7 @@ module.exports = (function(e, t) {
     }
     var R = Array.isArray;
     function isFunction(e) {
-      var t = isObject(e) ? T.call(e) : "";
+      var t = isObject(e) ? E.call(e) : "";
       return t == i || t == s;
     }
     function isObject(e) {
@@ -14216,7 +12008,7 @@ module.exports = (function(e, t) {
       return !!e && typeof e == "object";
     }
     function isSymbol(e) {
-      return typeof e == "symbol" || (isObjectLike(e) && T.call(e) == o);
+      return typeof e == "symbol" || (isObjectLike(e) && E.call(e) == o);
     }
     function toString(e) {
       return e == null ? "" : baseToString(e);
@@ -14320,19 +12112,22 @@ module.exports = (function(e, t) {
           };
         })();
   },
-  866: function(e, t, r) {
-    "use strict";
-    var n = r(816);
-    e.exports = function(e) {
-      var t = e.match(n);
-      if (!t) {
-        return null;
+  866: function(e) {
+    e.exports = removeHook;
+    function removeHook(e, t, r) {
+      if (!e.registry[t]) {
+        return;
       }
-      var r = t[0].replace(/#! ?/, "").split(" ");
-      var i = r[0].split("/").pop();
-      var s = r[1];
-      return i === "env" ? s : i + (s ? " " + s : "");
-    };
+      var n = e.registry[t]
+        .map(function(e) {
+          return e.orig;
+        })
+        .indexOf(r);
+      if (n === -1) {
+        return;
+      }
+      e.registry[t].splice(n, 1);
+    }
   },
   867: function(e) {
     e.exports = require("tty");
@@ -14343,52 +12138,6 @@ module.exports = (function(e, t) {
       return function wrap(t) {
         return e.apply(null, t);
       };
-    };
-  },
-  881: function(e) {
-    "use strict";
-    const t = process.platform === "win32";
-    function notFoundError(e, t) {
-      return Object.assign(new Error(`${t} ${e.command} ENOENT`), {
-        code: "ENOENT",
-        errno: "ENOENT",
-        syscall: `${t} ${e.command}`,
-        path: e.command,
-        spawnargs: e.args
-      });
-    }
-    function hookChildProcess(e, r) {
-      if (!t) {
-        return;
-      }
-      const n = e.emit;
-      e.emit = function(t, i) {
-        if (t === "exit") {
-          const t = verifyENOENT(i, r, "spawn");
-          if (t) {
-            return n.call(e, "error", t);
-          }
-        }
-        return n.apply(e, arguments);
-      };
-    }
-    function verifyENOENT(e, r) {
-      if (t && e === 1 && !r.file) {
-        return notFoundError(r.original, "spawn");
-      }
-      return null;
-    }
-    function verifyENOENTSync(e, r) {
-      if (t && e === 1 && !r.file) {
-        return notFoundError(r.original, "spawnSync");
-      }
-      return null;
-    }
-    e.exports = {
-      hookChildProcess: hookChildProcess,
-      verifyENOENT: verifyENOENT,
-      verifyENOENTSync: verifyENOENTSync,
-      notFoundError: notFoundError
     };
   },
   883: function(e) {
@@ -14403,14 +12152,14 @@ module.exports = (function(e, t) {
       p = /^\w*$/,
       c = /^\./,
       d = /[^.[\]]+|\[(?:(-?\d+(?:\.\d+)?)|(["'])((?:(?!\2)[^\\]|\\.)*?)\2)\]|(?=(?:\.|\[\])(?:\.|\[\]|$))/g;
-    var l = /[\\^$.*+?()[\]{}|]/g;
-    var g = /\\(\\)?/g;
+    var g = /[\\^$.*+?()[\]{}|]/g;
+    var l = /\\(\\)?/g;
     var m = /^\[object .+?Constructor\]$/;
     var h = /^(?:0|[1-9]\d*)$/;
-    var f =
+    var y =
       typeof global == "object" && global && global.Object === Object && global;
-    var y = typeof self == "object" && self && self.Object === Object && self;
-    var b = f || y || Function("return this")();
+    var f = typeof self == "object" && self && self.Object === Object && self;
+    var b = y || f || Function("return this")();
     function getValue(e, t) {
       return e == null ? undefined : e[t];
     }
@@ -14424,32 +12173,32 @@ module.exports = (function(e, t) {
       return t;
     }
     var _ = Array.prototype,
-      w = Function.prototype,
-      q = Object.prototype;
+      q = Function.prototype,
+      w = Object.prototype;
     var v = b["__core-js_shared__"];
-    var E = (function() {
+    var T = (function() {
       var e = /[^.]+$/.exec((v && v.keys && v.keys.IE_PROTO) || "");
       return e ? "Symbol(src)_1." + e : "";
     })();
-    var T = w.toString;
-    var C = q.hasOwnProperty;
-    var j = q.toString;
-    var S = RegExp(
+    var E = q.toString;
+    var C = w.hasOwnProperty;
+    var j = w.toString;
+    var k = RegExp(
       "^" +
-        T.call(C)
-          .replace(l, "\\$&")
+        E.call(C)
+          .replace(g, "\\$&")
           .replace(
             /hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g,
             "$1.*?"
           ) +
         "$"
     );
-    var x = b.Symbol,
-      k = _.splice;
-    var O = getNative(b, "Map"),
-      P = getNative(Object, "create");
-    var A = x ? x.prototype : undefined,
-      R = A ? A.toString : undefined;
+    var P = b.Symbol,
+      O = _.splice;
+    var S = getNative(b, "Map"),
+      A = getNative(Object, "create");
+    var x = P ? P.prototype : undefined,
+      R = x ? x.toString : undefined;
     function Hash(e) {
       var t = -1,
         r = e ? e.length : 0;
@@ -14460,14 +12209,14 @@ module.exports = (function(e, t) {
       }
     }
     function hashClear() {
-      this.__data__ = P ? P(null) : {};
+      this.__data__ = A ? A(null) : {};
     }
     function hashDelete(e) {
       return this.has(e) && delete this.__data__[e];
     }
     function hashGet(e) {
       var t = this.__data__;
-      if (P) {
+      if (A) {
         var n = t[e];
         return n === r ? undefined : n;
       }
@@ -14475,11 +12224,11 @@ module.exports = (function(e, t) {
     }
     function hashHas(e) {
       var t = this.__data__;
-      return P ? t[e] !== undefined : C.call(t, e);
+      return A ? t[e] !== undefined : C.call(t, e);
     }
     function hashSet(e, t) {
       var n = this.__data__;
-      n[e] = P && t === undefined ? r : t;
+      n[e] = A && t === undefined ? r : t;
       return this;
     }
     Hash.prototype.clear = hashClear;
@@ -14509,7 +12258,7 @@ module.exports = (function(e, t) {
       if (r == n) {
         t.pop();
       } else {
-        k.call(t, r, 1);
+        O.call(t, r, 1);
       }
       return true;
     }
@@ -14548,7 +12297,7 @@ module.exports = (function(e, t) {
     function mapCacheClear() {
       this.__data__ = {
         hash: new Hash(),
-        map: new (O || ListCache)(),
+        map: new (S || ListCache)(),
         string: new Hash()
       };
     }
@@ -14589,7 +12338,7 @@ module.exports = (function(e, t) {
       if (!isObject(e) || isMasked(e)) {
         return false;
       }
-      var t = isFunction(e) || isHostObject(e) ? S : m;
+      var t = isFunction(e) || isHostObject(e) ? k : m;
       return t.test(toSource(e));
     }
     function baseSet(e, t, r, n) {
@@ -14668,7 +12417,7 @@ module.exports = (function(e, t) {
         : e === null;
     }
     function isMasked(e) {
-      return !!E && E in e;
+      return !!T && T in e;
     }
     var G = memoize(function(e) {
       e = toString(e);
@@ -14677,7 +12426,7 @@ module.exports = (function(e, t) {
         t.push("");
       }
       e.replace(d, function(e, r, n, i) {
-        t.push(n ? i.replace(g, "$1") : r || e);
+        t.push(n ? i.replace(l, "$1") : r || e);
       });
       return t;
     });
@@ -14691,7 +12440,7 @@ module.exports = (function(e, t) {
     function toSource(e) {
       if (e != null) {
         try {
-          return T.call(e);
+          return E.call(e);
         } catch (e) {}
         try {
           return e + "";
@@ -14884,383 +12633,5 @@ module.exports = (function(e, t) {
         }
       );
     };
-  },
-  948: function(e) {
-    "use strict";
-    e.exports = function(e) {
-      try {
-        return e();
-      } catch (e) {}
-    };
-  },
-  954: function(e) {
-    e.exports = validateAuth;
-    function validateAuth(e) {
-      if (typeof e === "string") {
-        return;
-      }
-      if (typeof e === "function") {
-        return;
-      }
-      if (e.username && e.password) {
-        return;
-      }
-      if (e.clientId && e.clientSecret) {
-        return;
-      }
-      throw new Error(`Invalid "auth" option: ${JSON.stringify(e)}`);
-    }
-  },
-  955: function(e, t, r) {
-    "use strict";
-    const n = r(622);
-    const i = r(129);
-    const s = r(20);
-    const o = r(768);
-    const a = r(621);
-    const u = r(323);
-    const p = r(145);
-    const c = r(697);
-    const d = r(260);
-    const l = r(427);
-    const g = r(168);
-    const m = 1e3 * 1e3 * 10;
-    function handleArgs(e, t, r) {
-      let i;
-      r = Object.assign({ extendEnv: true, env: {} }, r);
-      if (r.extendEnv) {
-        r.env = Object.assign({}, process.env, r.env);
-      }
-      if (r.__winShell === true) {
-        delete r.__winShell;
-        i = {
-          command: e,
-          args: t,
-          options: r,
-          file: e,
-          original: { cmd: e, args: t }
-        };
-      } else {
-        i = s._parse(e, t, r);
-      }
-      r = Object.assign(
-        {
-          maxBuffer: m,
-          buffer: true,
-          stripEof: true,
-          preferLocal: true,
-          localDir: i.options.cwd || process.cwd(),
-          encoding: "utf8",
-          reject: true,
-          cleanup: true
-        },
-        i.options
-      );
-      r.stdio = g(r);
-      if (r.preferLocal) {
-        r.env = a.env(Object.assign({}, r, { cwd: r.localDir }));
-      }
-      if (r.detached) {
-        r.cleanup = false;
-      }
-      if (process.platform === "win32" && n.basename(i.command) === "cmd.exe") {
-        i.args.unshift("/q");
-      }
-      return { cmd: i.command, args: i.args, opts: r, parsed: i };
-    }
-    function handleInput(e, t) {
-      if (t === null || t === undefined) {
-        return;
-      }
-      if (u(t)) {
-        t.pipe(e.stdin);
-      } else {
-        e.stdin.end(t);
-      }
-    }
-    function handleOutput(e, t) {
-      if (t && e.stripEof) {
-        t = o(t);
-      }
-      return t;
-    }
-    function handleShell(e, t, r) {
-      let n = "/bin/sh";
-      let i = ["-c", t];
-      r = Object.assign({}, r);
-      if (process.platform === "win32") {
-        r.__winShell = true;
-        n = process.env.comspec || "cmd.exe";
-        i = ["/s", "/c", `"${t}"`];
-        r.windowsVerbatimArguments = true;
-      }
-      if (r.shell) {
-        n = r.shell;
-        delete r.shell;
-      }
-      return e(n, i, r);
-    }
-    function getStream(e, t, { encoding: r, buffer: n, maxBuffer: i }) {
-      if (!e[t]) {
-        return null;
-      }
-      let s;
-      if (!n) {
-        s = new Promise((r, n) => {
-          e[t].once("end", r).once("error", n);
-        });
-      } else if (r) {
-        s = p(e[t], { encoding: r, maxBuffer: i });
-      } else {
-        s = p.buffer(e[t], { maxBuffer: i });
-      }
-      return s.catch(e => {
-        e.stream = t;
-        e.message = `${t} ${e.message}`;
-        throw e;
-      });
-    }
-    function makeError(e, t) {
-      const { stdout: r, stderr: n } = e;
-      let i = e.error;
-      const { code: s, signal: o } = e;
-      const { parsed: a, joinedCmd: u } = t;
-      const p = t.timedOut || false;
-      if (!i) {
-        let e = "";
-        if (Array.isArray(a.opts.stdio)) {
-          if (a.opts.stdio[2] !== "inherit") {
-            e += e.length > 0 ? n : `\n${n}`;
-          }
-          if (a.opts.stdio[1] !== "inherit") {
-            e += `\n${r}`;
-          }
-        } else if (a.opts.stdio !== "inherit") {
-          e = `\n${n}${r}`;
-        }
-        i = new Error(`Command failed: ${u}${e}`);
-        i.code = s < 0 ? l(s) : s;
-      }
-      i.stdout = r;
-      i.stderr = n;
-      i.failed = true;
-      i.signal = o || null;
-      i.cmd = u;
-      i.timedOut = p;
-      return i;
-    }
-    function joinCmd(e, t) {
-      let r = e;
-      if (Array.isArray(t) && t.length > 0) {
-        r += " " + t.join(" ");
-      }
-      return r;
-    }
-    e.exports = (e, t, r) => {
-      const n = handleArgs(e, t, r);
-      const { encoding: o, buffer: a, maxBuffer: u } = n.opts;
-      const p = joinCmd(e, t);
-      let l;
-      try {
-        l = i.spawn(n.cmd, n.args, n.opts);
-      } catch (e) {
-        return Promise.reject(e);
-      }
-      let g;
-      if (n.opts.cleanup) {
-        g = d(() => {
-          l.kill();
-        });
-      }
-      let m = null;
-      let h = false;
-      const f = () => {
-        if (m) {
-          clearTimeout(m);
-          m = null;
-        }
-        if (g) {
-          g();
-        }
-      };
-      if (n.opts.timeout > 0) {
-        m = setTimeout(() => {
-          m = null;
-          h = true;
-          l.kill(n.opts.killSignal);
-        }, n.opts.timeout);
-      }
-      const y = new Promise(e => {
-        l.on("exit", (t, r) => {
-          f();
-          e({ code: t, signal: r });
-        });
-        l.on("error", t => {
-          f();
-          e({ error: t });
-        });
-        if (l.stdin) {
-          l.stdin.on("error", t => {
-            f();
-            e({ error: t });
-          });
-        }
-      });
-      function destroy() {
-        if (l.stdout) {
-          l.stdout.destroy();
-        }
-        if (l.stderr) {
-          l.stderr.destroy();
-        }
-      }
-      const b = () =>
-        c(
-          Promise.all([
-            y,
-            getStream(l, "stdout", { encoding: o, buffer: a, maxBuffer: u }),
-            getStream(l, "stderr", { encoding: o, buffer: a, maxBuffer: u })
-          ]).then(e => {
-            const t = e[0];
-            t.stdout = e[1];
-            t.stderr = e[2];
-            if (t.error || t.code !== 0 || t.signal !== null) {
-              const e = makeError(t, { joinedCmd: p, parsed: n, timedOut: h });
-              e.killed = e.killed || l.killed;
-              if (!n.opts.reject) {
-                return e;
-              }
-              throw e;
-            }
-            return {
-              stdout: handleOutput(n.opts, t.stdout),
-              stderr: handleOutput(n.opts, t.stderr),
-              code: 0,
-              failed: false,
-              killed: false,
-              signal: null,
-              cmd: p,
-              timedOut: false
-            };
-          }),
-          destroy
-        );
-      s._enoent.hookChildProcess(l, n.parsed);
-      handleInput(l, n.opts.input);
-      l.then = (e, t) => b().then(e, t);
-      l.catch = e => b().catch(e);
-      return l;
-    };
-    e.exports.stdout = (...t) => e.exports(...t).then(e => e.stdout);
-    e.exports.stderr = (...t) => e.exports(...t).then(e => e.stderr);
-    e.exports.shell = (t, r) => handleShell(e.exports, t, r);
-    e.exports.sync = (e, t, r) => {
-      const n = handleArgs(e, t, r);
-      const s = joinCmd(e, t);
-      if (u(n.opts.input)) {
-        throw new TypeError(
-          "The `input` option cannot be a stream in sync mode"
-        );
-      }
-      const o = i.spawnSync(n.cmd, n.args, n.opts);
-      o.code = o.status;
-      if (o.error || o.status !== 0 || o.signal !== null) {
-        const e = makeError(o, { joinedCmd: s, parsed: n });
-        if (!n.opts.reject) {
-          return e;
-        }
-        throw e;
-      }
-      return {
-        stdout: handleOutput(n.opts, o.stdout),
-        stderr: handleOutput(n.opts, o.stderr),
-        code: 0,
-        failed: false,
-        signal: null,
-        cmd: s,
-        timedOut: false
-      };
-    };
-    e.exports.shellSync = (t, r) => handleShell(e.exports.sync, t, r);
-  },
-  966: function(e, t, r) {
-    "use strict";
-    const { PassThrough: n } = r(413);
-    e.exports = e => {
-      e = Object.assign({}, e);
-      const { array: t } = e;
-      let { encoding: r } = e;
-      const i = r === "buffer";
-      let s = false;
-      if (t) {
-        s = !(r || i);
-      } else {
-        r = r || "utf8";
-      }
-      if (i) {
-        r = null;
-      }
-      let o = 0;
-      const a = [];
-      const u = new n({ objectMode: s });
-      if (r) {
-        u.setEncoding(r);
-      }
-      u.on("data", e => {
-        a.push(e);
-        if (s) {
-          o = a.length;
-        } else {
-          o += e.length;
-        }
-      });
-      u.getBufferedValue = () => {
-        if (t) {
-          return a;
-        }
-        return i ? Buffer.concat(a, o) : a.join("");
-      };
-      u.getBufferedLength = () => o;
-      return u;
-    };
-  },
-  969: function(e, t, r) {
-    var n = r(11);
-    e.exports = n(once);
-    e.exports.strict = n(onceStrict);
-    once.proto = once(function() {
-      Object.defineProperty(Function.prototype, "once", {
-        value: function() {
-          return once(this);
-        },
-        configurable: true
-      });
-      Object.defineProperty(Function.prototype, "onceStrict", {
-        value: function() {
-          return onceStrict(this);
-        },
-        configurable: true
-      });
-    });
-    function once(e) {
-      var t = function() {
-        if (t.called) return t.value;
-        t.called = true;
-        return (t.value = e.apply(this, arguments));
-      };
-      t.called = false;
-      return t;
-    }
-    function onceStrict(e) {
-      var t = function() {
-        if (t.called) throw new Error(t.onceError);
-        t.called = true;
-        return (t.value = e.apply(this, arguments));
-      };
-      var r = e.name || "Function wrapped with `once`";
-      t.onceError = r + " shouldn't be called more than once";
-      t.called = false;
-      return t;
-    }
   }
 });

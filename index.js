@@ -13,7 +13,12 @@ const wakatime = new WakaTimeClient(wakatimeApiKey);
 const octokit = new Octokit({ auth: `token ${githubToken}` });
 
 async function main() {
-  const stats = await wakatime.getMyStats({ range: RANGE.LAST_7_DAYS });
+  try {
+    const stats = await wakatime.getMyStats({ range: RANGE.LAST_7_DAYS });
+  } catch (e) {
+    console.error("Error getting wakatime stats: ", e);
+    return;
+  }
   await updateGist(stats);
 }
 
@@ -45,7 +50,7 @@ async function updateGist(stats) {
     lines.push(line.join(" "));
   }
 
-  if (lines.length == 0) return;
+  if (lines.length === 0) return;
 
   try {
     // Get original filename to update that same file
