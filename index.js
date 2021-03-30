@@ -36,12 +36,14 @@ async function updateGist(stats) {
   }
 
   const lines = [];
-  const languages = stats.data.languages.filter(({ name }) => name !== "TeX");
+  const languages = stats.data.languages.filter(({ name }) => name != "TeX");
   const take = Math.min(languages.length, 5);
 
   for (let i = 0; i < take; i++) {
     const data = languages[i];
     const { name, percent, text: time } = data;
+
+    console.log("language ", name);
 
     const line = [
       trimRightStr(name, 10).padEnd(10),
